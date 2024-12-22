@@ -36,7 +36,6 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 	@Test
 	public void insertProduct() {
 		Product expectedProduct = new Product();
-		expectedProduct.setId(2);
 		expectedProduct.setName("Camera Canon");
 		expectedProduct.setDescription("A melhor definição para suas fotos.");
 		expectedProduct.setPrice(new BigDecimal("5000.00"));
@@ -56,7 +55,27 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		// Clear memory of entityManager (to remove expectedProduct from memory and select query execute)
 		entityManager.clear();
 		
-		Product actualProduct = entityManager.find(Product.class, 2);
+		Product actualProduct = entityManager.find(Product.class, expectedProduct.getId());
 		Assertions.assertEquals(expectedProduct, actualProduct);
+	}
+	
+	@Test
+	public void removeProduct() {
+		Product productToRemove = entityManager.find(Product.class, 2);
+
+		// Out of transaction the code works because remove method wait for begin transaction
+		// But if no transaction initialize then delete query is not executed 
+		// entityManager.remove(productToRemove);
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(productToRemove);
+		entityManager.getTransaction().commit();
+		
+		// If remove executed out of transaction and clear is not executed
+		// Find return null but object exists in database (delete query is not executed)
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, 2);
+		Assertions.assertNull(actualProduct);
 	}
 }
