@@ -38,12 +38,34 @@ public class SearchingDataTests {
 	}
 	
 	@Test
-	public void searchProductWithId1() {
+	public void searchProductWithId1UsingFind() {
 		Product expectedProduct = new Product();
 		expectedProduct.setId(1);
 
 		Product actualProduct = entityManager.find(Product.class, 1);
 
 		Assertions.assertEquals(expectedProduct, actualProduct);
+	}
+	
+	@Test
+	public void searchProductWithId1UsingGetReference() {
+		Product expectedProduct = new Product();
+		expectedProduct.setId(1);
+		
+		// Return a proxy and select is applied when the properties will used
+		Product actualProduct = entityManager.getReference(Product.class, 1);
+
+		Assertions.assertEquals(expectedProduct, actualProduct);
+	}
+	
+	@Test
+	public void searchProductWithId1AndRefreshReference() {
+		Product actualProduct = entityManager.find(Product.class, 1);
+		actualProduct.setName("Microphone Samson");
+		
+		// Do select to refresh data from database
+		entityManager.refresh(actualProduct);
+		
+		Assertions.assertEquals("Kindle", actualProduct.getName());
 	}
 }
