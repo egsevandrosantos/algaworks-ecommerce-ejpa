@@ -125,4 +125,29 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		Product actualProduct = entityManager.find(Product.class, productToUpdate.getId());
 		Assertions.assertTrue(productToUpdate.fullEquals(actualProduct));
 	}
+	
+	@Test
+	public void insertProductWithMerge() {
+		Product expectedProduct = new Product();
+		expectedProduct.setId(UUID.randomUUID());
+		expectedProduct.setName("Microphone Rode Videmic");
+		expectedProduct.setDescription("A melhor qualidade de som.");
+		expectedProduct.setPrice(new BigDecimal("1000.00"));
+		
+		// Out of transaction the code works because merge method wait for begin transaction
+		// But if no transaction initialize then insert query is not executed
+		// entityManager.merge(expectedProduct);
+		
+		entityManager.getTransaction().begin();
+		// Execute select in database by id to recover object if exists
+		// If exits then execute update else execute insert
+		entityManager.merge(expectedProduct);
+		entityManager.getTransaction().commit();
+		
+		// Clear memory of entityManager (to remove expectedProduct from memory and select query execute)
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, expectedProduct.getId());
+		Assertions.assertTrue(expectedProduct.fullEquals(actualProduct));
+	}
 }
