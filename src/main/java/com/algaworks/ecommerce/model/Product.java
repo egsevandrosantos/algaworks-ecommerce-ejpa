@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,4 +25,13 @@ public class Product {
 	private String name;
 	private String description;
 	private BigDecimal price;
+	
+	public boolean fullEquals(Object obj) {
+		if (!this.equals(obj)) return false;
+		
+		Product other = (Product) obj;
+		return Objects.equals(name, other.name)
+			&& Objects.equals(description, other.description)
+			&& Objects.equals(price, other.price);
+	}
 }
