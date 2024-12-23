@@ -102,4 +102,25 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		Product actualProduct = entityManager.find(Product.class, 1);
 		Assertions.assertTrue(productToUpdate.fullEquals(actualProduct));
 	}
+	
+	@Test
+	public void updateProductWithManagedObject() {
+		Product productToUpdate = entityManager.find(Product.class, 1);
+		
+		// Out of transaction the code works because productToUpdate is a object managed by entity manager
+		// But if no transaction initialize then update query is not executed
+		// Is not necessary merge method because entity manager listen the change in object and apply automatically
+		// productToUpdate.setName("Kindle Paperwhite 2º generation");
+
+		entityManager.getTransaction().begin();
+		productToUpdate.setName("Kindle Paperwhite 2º generation");
+		entityManager.getTransaction().commit();
+		
+		// If not exists one transaction and clear is not executed
+		// Find return updated object but in the database is the previous object
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, 1);
+		Assertions.assertTrue(productToUpdate.fullEquals(actualProduct));
+	}
 }
