@@ -196,4 +196,21 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 			Assertions.assertTrue(productToMerge.fullEquals(actualProduct));
 		}
 	}
+	
+	@Test
+	public void detachManagedObject() {
+		Product productToUpdate = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+		// Remove (detach) object from entity manager memory
+		// After this point the object is not managed by entity manager
+		entityManager.detach(productToUpdate);
+
+		entityManager.getTransaction().begin();
+		productToUpdate.setName("Kindle Paperwhite 3º generation");
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, productToUpdate.getId());
+		Assertions.assertNotEquals("Kindle Paperwhite 3º generation", actualProduct.getName());
+	}
 }
