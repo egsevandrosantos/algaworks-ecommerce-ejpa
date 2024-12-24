@@ -150,4 +150,50 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		Product actualProduct = entityManager.find(Product.class, expectedProduct.getId());
 		Assertions.assertTrue(expectedProduct.fullEquals(actualProduct));
 	}
+	
+	@Test
+	public void differencesPersistenceAndMerge() {
+		{
+			Product productToPersist = new Product();
+			productToPersist.setId(UUID.randomUUID());
+			productToPersist.setName("Smartphone One Plus");
+			productToPersist.setDescription("O processador mais rápido");
+			productToPersist.setPrice(new BigDecimal("2000.00"));
+		
+			entityManager.getTransaction().begin();
+			// Insert product and managed by entity manager
+			entityManager.persist(productToPersist);
+			// Update product because is managed by entity manager
+			productToPersist.setName("Smartphone Two Plus");
+			entityManager.getTransaction().commit();
+			
+			entityManager.clear();
+			
+			Product actualProduct = entityManager.find(Product.class, productToPersist.getId());
+			Assertions.assertTrue(productToPersist.fullEquals(actualProduct));
+		}
+		
+		{
+			Product productToMerge = new Product();
+			productToMerge.setId(UUID.randomUUID());
+			productToMerge.setName("Notebook Dell");
+			productToMerge.setDescription("O melhor da categoria");
+			productToMerge.setPrice(new BigDecimal("2000.00"));
+			
+			entityManager.getTransaction().begin();
+			// Select to get object if exists and add a copy of object to managed by entity manager
+			// If exists then execute insert else execute update
+			// entityManager.merge(productToMerge);
+			// To get the copy, replace entityManager.merge(productToMerge); to:
+			productToMerge = entityManager.merge(productToMerge);
+			// Update product only if productToMerge is the copy (object managed by entity manager)
+			productToMerge.setName("Notebook Dell Two");
+			entityManager.getTransaction().commit();
+			
+			entityManager.clear();
+			
+			Product actualProduct = entityManager.find(Product.class, productToMerge.getId());
+			Assertions.assertTrue(productToMerge.fullEquals(actualProduct));
+		}
+	}
 }
