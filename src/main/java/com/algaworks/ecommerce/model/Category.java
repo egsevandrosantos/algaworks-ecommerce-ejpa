@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import java.util.Objects;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -20,6 +21,7 @@ public class Category {
 	@Id
 	private UUID id;
 	private String name;
+	@Column(name = "parent_id")
 	private UUID parentId;
 	
 	public boolean fullEquals(Object obj) {

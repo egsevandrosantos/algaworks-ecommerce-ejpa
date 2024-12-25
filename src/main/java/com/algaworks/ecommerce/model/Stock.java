@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import java.util.Objects;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -19,6 +20,7 @@ public class Stock {
 	@EqualsAndHashCode.Include
 	@Id
 	private UUID id;
+	@Column(name = "product_id")
 	private UUID productId;
 	private Integer quantity;
 	
