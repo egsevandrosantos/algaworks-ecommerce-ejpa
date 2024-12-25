@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.model;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -14,19 +13,12 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "clients")
-public class Client {
+@Table(name = "bank_slip_payments")
+public class BankSlipPayment {
 	@EqualsAndHashCode.Include
 	@Id
 	private UUID id;
-	private String name;
-	private ClientSex sex;
-	
-	public boolean fullEquals(Object obj) {
-		if (!this.equals(obj)) return false;
-		
-		Client other = (Client) obj;
-		return Objects.equals(name, other.name)
-			&& Objects.equals(sex, other.sex);
-	}
+	private UUID orderId;
+	private PaymentStatus status;
+	private String barcode;
 }

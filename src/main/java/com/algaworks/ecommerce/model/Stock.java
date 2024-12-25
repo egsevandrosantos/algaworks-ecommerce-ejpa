@@ -14,19 +14,19 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "clients")
-public class Client {
+@Table(name = "stocks")
+public class Stock {
 	@EqualsAndHashCode.Include
 	@Id
 	private UUID id;
-	private String name;
-	private ClientSex sex;
+	private UUID productId;
+	private Integer quantity;
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
 		
-		Client other = (Client) obj;
-		return Objects.equals(name, other.name)
-			&& Objects.equals(sex, other.sex);
+		Stock other = (Stock) obj;
+		return Objects.equals(productId, other.productId)
+			&& Objects.equals(quantity, other.quantity);
 	}
 }
