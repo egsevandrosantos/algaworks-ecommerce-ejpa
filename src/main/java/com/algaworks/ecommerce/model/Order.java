@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -29,6 +31,7 @@ public class Order {
 	@Column(name = "invoice_id")
 	private UUID invoiceId;
 	private BigDecimal total;
+	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	
 	public boolean fullEquals(Object obj) {

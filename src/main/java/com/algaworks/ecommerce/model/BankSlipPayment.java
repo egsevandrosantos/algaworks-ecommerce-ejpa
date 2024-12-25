@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -21,6 +23,7 @@ public class BankSlipPayment {
 	private UUID id;
 	@Column(name = "order_id")
 	private UUID orderId;
+	@Enumerated(EnumType.STRING)
 	private PaymentStatus status;
 	private String barcode;
 }

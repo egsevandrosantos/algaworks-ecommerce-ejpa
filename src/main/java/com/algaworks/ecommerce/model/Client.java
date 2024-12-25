@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,7 @@ public class Client {
 	@Id
 	private UUID id;
 	private String name;
+	@Enumerated(EnumType.STRING)
 	private ClientSex sex;
 	
 	public boolean fullEquals(Object obj) {
