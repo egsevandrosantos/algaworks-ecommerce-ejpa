@@ -7,6 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -21,6 +23,7 @@ import lombok.Setter;
 public class CardPayment {
 	@EqualsAndHashCode.Include
 	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 	@Column(name = "order_id")
 	private UUID orderId;

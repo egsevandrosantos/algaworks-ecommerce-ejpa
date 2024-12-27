@@ -12,7 +12,6 @@ public class CrudClientTests extends EntityManagerTests {
 	@Test
 	public void create() {
 		Client expected = new Client();
-		expected.setId(UUID.randomUUID());
 		expected.setName("Maria das Flores");
 		
 		entityManager.getTransaction().begin();

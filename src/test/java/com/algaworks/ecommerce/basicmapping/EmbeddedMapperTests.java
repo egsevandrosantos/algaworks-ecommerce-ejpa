@@ -2,7 +2,6 @@ package com.algaworks.ecommerce.basicmapping;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ public class EmbeddedMapperTests extends EntityManagerTests {
 		orderAddress.setState("MG");
 		
 		Order order = new Order();
-		order.setId(UUID.randomUUID());
 		order.setOrderedAt(Instant.now());
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(new BigDecimal("1000.00"));

@@ -37,7 +37,6 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 	@Test
 	public void insertProduct() {
 		Product expectedProduct = new Product();
-		expectedProduct.setId(UUID.randomUUID());
 		expectedProduct.setName("Camera Canon");
 		expectedProduct.setDescription("A melhor definição para suas fotos.");
 		expectedProduct.setPrice(new BigDecimal("5000.00"));
@@ -129,7 +128,6 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 	@Test
 	public void insertProductWithMerge() {
 		Product expectedProduct = new Product();
-		expectedProduct.setId(UUID.randomUUID());
 		expectedProduct.setName("Microphone Rode Videmic");
 		expectedProduct.setDescription("A melhor qualidade de som.");
 		expectedProduct.setPrice(new BigDecimal("1000.00"));
@@ -141,7 +139,7 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		entityManager.getTransaction().begin();
 		// Execute select in database by id to recover object if exists
 		// If exits then execute update else execute insert
-		entityManager.merge(expectedProduct);
+		expectedProduct = entityManager.merge(expectedProduct);
 		entityManager.getTransaction().commit();
 		
 		// Clear memory of entityManager (to remove expectedProduct from memory and select query execute)
@@ -155,7 +153,6 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 	public void differencesPersistenceAndMerge() {
 		{
 			Product productToPersist = new Product();
-			productToPersist.setId(UUID.randomUUID());
 			productToPersist.setName("Smartphone One Plus");
 			productToPersist.setDescription("O processador mais rápido");
 			productToPersist.setPrice(new BigDecimal("2000.00"));
@@ -175,7 +172,6 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		
 		{
 			Product productToMerge = new Product();
-			productToMerge.setId(UUID.randomUUID());
 			productToMerge.setName("Notebook Dell");
 			productToMerge.setDescription("O melhor da categoria");
 			productToMerge.setPrice(new BigDecimal("2000.00"));
