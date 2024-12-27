@@ -1,5 +1,7 @@
 package com.algaworks.ecommerce.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,6 @@ import lombok.Setter;
 public class PrimaryKeyStrategy {
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 }
