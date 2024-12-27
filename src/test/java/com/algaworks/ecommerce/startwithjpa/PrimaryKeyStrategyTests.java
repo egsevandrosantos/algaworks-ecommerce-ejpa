@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.PrimaryKeyStrategy;
 
+@Deprecated
 public class PrimaryKeyStrategyTests extends EntityManagerTests {
 	@Test
 	public void testPrimaryKeyStrategy() {

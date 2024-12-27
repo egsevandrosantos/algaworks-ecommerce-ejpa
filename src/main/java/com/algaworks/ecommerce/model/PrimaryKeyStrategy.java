@@ -16,6 +16,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "primary_key_strategies")
+@Deprecated
 public class PrimaryKeyStrategy {
 	@EqualsAndHashCode.Include
 	@Id
