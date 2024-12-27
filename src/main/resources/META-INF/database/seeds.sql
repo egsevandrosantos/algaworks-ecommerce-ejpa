@@ -3,3 +3,5 @@ INSERT INTO products (id, name, price, description) VALUES (UNHEX(REPLACE('77c31
 
 INSERT INTO clients (id, name) VALUES (UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), 'João da Silva');
 INSERT INTO clients (id, name) VALUES (UNHEX(REPLACE('00492c10-234a-4388-9375-2da767ce0d6a', '-', '')), 'Manoel');
+
+INSERT INTO orders (id, total, ordered_at, status) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), '10.00', '2024-12-27 19:07:35.624173', 'WAITING');

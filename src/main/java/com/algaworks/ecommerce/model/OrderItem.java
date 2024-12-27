@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -9,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,10 +27,12 @@ public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@Column(name = "order_id")
-	private UUID orderId;
-	@Column(name = "product_id")
-	private UUID productId;
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private Order order;
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
 	@Column(name = "product_price")
 	private BigDecimal productPrice;
 	private Integer quantity;
@@ -36,9 +41,9 @@ public class OrderItem {
 		if (!this.equals(obj)) return false;
 		
 		OrderItem other = (OrderItem) obj;
-		return Objects.equals(orderId, other.orderId)
-			&& Objects.equals(productId, other.productId)
-			&& Objects.equals(productPrice, other.productPrice)
+		return Objects.equals(Optional.ofNullable(order).map(Order::getId), Optional.ofNullable(other.order).map(Order::getId))
+			&& Objects.equals(Optional.ofNullable(product).map(Product::getId), Optional.ofNullable(other.product).map(Product::getId))
+			&& Optional.ofNullable(productPrice).map(productPrice -> productPrice.compareTo(other.productPrice) == 0).orElse(productPrice == other.productPrice)
 			&& Objects.equals(quantity, other.quantity);
 	}
 }
