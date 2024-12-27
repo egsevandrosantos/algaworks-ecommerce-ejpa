@@ -16,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,6 +33,9 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
+	@ManyToOne // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
+	@JoinColumn(name = "client_id")
+	private Client client;
 	@Column(name = "ordered_at")
 	private Instant orderedAt;
 	@Column(name = "finished_at")
@@ -53,7 +58,7 @@ public class Order {
 		return Objects.equals(Optional.ofNullable(orderedAt).map(instantFormatter::format), Optional.ofNullable(other.orderedAt).map(instantFormatter::format))
 			&& Objects.equals(Optional.ofNullable(finishedAt).map(instantFormatter::format), Optional.ofNullable(other.finishedAt).map(instantFormatter::format))
 			&& Objects.equals(invoiceId, other.invoiceId)
-			&& Objects.equals(total, other.total)
+			&& Optional.ofNullable(total).map(total -> total.compareTo(other.total) == 0).orElse(total == other.total)
 			&& Objects.equals(status, other.status)
 			&& Objects.equals(address, other.address);
 	}
