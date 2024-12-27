@@ -8,7 +8,7 @@ import com.algaworks.ecommerce.model.PrimaryKeyStrategy;
 
 public class PrimaryKeyStrategyTests extends EntityManagerTests {
 	@Test
-	public void testAutoStrategy() {
+	public void testPrimaryKeyStrategy() {
 		PrimaryKeyStrategy primaryKeyStrategy = new PrimaryKeyStrategy();
 		
 		entityManager.getTransaction().begin();
