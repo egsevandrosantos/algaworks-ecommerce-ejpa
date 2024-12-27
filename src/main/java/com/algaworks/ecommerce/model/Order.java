@@ -2,10 +2,14 @@ package com.algaworks.ecommerce.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,15 +37,21 @@ public class Order {
 	private BigDecimal total;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
+	@Embedded
+	private OrderAddress address;
+	
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
 		
 		Order other = (Order) obj;
-		return Objects.equals(orderedAt, other.orderedAt)
-			&& Objects.equals(finishedAt, other.finishedAt)
+		
+		DateTimeFormatter instantFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
+		return Objects.equals(Optional.ofNullable(orderedAt).map(instantFormatter::format), Optional.ofNullable(other.orderedAt).map(instantFormatter::format))
+			&& Objects.equals(Optional.ofNullable(finishedAt).map(instantFormatter::format), Optional.ofNullable(other.finishedAt).map(instantFormatter::format))
 			&& Objects.equals(invoiceId, other.invoiceId)
 			&& Objects.equals(total, other.total)
-			&& Objects.equals(status, other.status);
+			&& Objects.equals(status, other.status)
+			&& Objects.equals(address, other.address);
 	}
 }
