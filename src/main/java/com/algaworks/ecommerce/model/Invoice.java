@@ -1,6 +1,10 @@
 package com.algaworks.ecommerce.model;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -8,6 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,9 +29,20 @@ public class Invoice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@Column(name = "order_id")
-	private UUID orderId;
+	@OneToOne
+	@JoinColumn(name = "order_id")
+	private Order order;
 	private String xml;
 	@Column(name = "emission_date")
 	private Instant emissionDate;
+	
+	public boolean fullEquals(Object obj) {
+		if (!this.equals(obj)) return false;
+		
+		Invoice other = (Invoice) obj;
+		DateTimeFormatter instantFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
+		return Objects.equals(Optional.ofNullable(order).map(Order::getId), Optional.ofNullable(other.order).map(Order::getId))
+			&& Objects.equals(xml, other.xml)
+			&& Objects.equals(Optional.ofNullable(emissionDate).map(instantFormatter::format), Optional.ofNullable(other.emissionDate).map(instantFormatter::format));
+	}
 }

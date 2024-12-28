@@ -43,8 +43,6 @@ public class Order {
 	private Instant orderedAt;
 	@Column(name = "finished_at")
 	private Instant finishedAt;
-	@Column(name = "invoice_id")
-	private UUID invoiceId;
 	private BigDecimal total;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
@@ -54,6 +52,8 @@ public class Order {
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private CardPayment cardPayment;
+	@OneToOne(mappedBy = "order")
+	private Invoice invoice;
 	
 	
 	public boolean fullEquals(Object obj) {
@@ -64,7 +64,6 @@ public class Order {
 		DateTimeFormatter instantFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
 		return Objects.equals(Optional.ofNullable(orderedAt).map(instantFormatter::format), Optional.ofNullable(other.orderedAt).map(instantFormatter::format))
 			&& Objects.equals(Optional.ofNullable(finishedAt).map(instantFormatter::format), Optional.ofNullable(other.finishedAt).map(instantFormatter::format))
-			&& Objects.equals(invoiceId, other.invoiceId)
 			&& Optional.ofNullable(total).map(total -> total.compareTo(other.total) == 0).orElse(total == other.total)
 			&& Objects.equals(status, other.status)
 			&& Objects.equals(address, other.address);
