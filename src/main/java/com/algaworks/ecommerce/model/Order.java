@@ -36,7 +36,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@ManyToOne // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
+	@ManyToOne /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id")
 	private Client client;
 	@Column(name = "ordered_at")
@@ -48,7 +48,7 @@ public class Order {
 	private OrderStatus status;
 	@Embedded
 	private OrderAddress address;
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order") /*fetch = FetchType.EAGER*/
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private CardPayment cardPayment;
