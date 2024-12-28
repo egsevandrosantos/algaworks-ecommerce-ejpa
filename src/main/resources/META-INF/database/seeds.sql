@@ -8,3 +8,5 @@ INSERT INTO orders (id, total, ordered_at, status) VALUES (UNHEX(REPLACE('24be65
 INSERT INTO orders (id, total, ordered_at, status) VALUES (UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), '10.00', '2024-12-27 02:36:35.624173', 'WAITING');
 
 INSERT INTO order_items (id, order_id, product_price, quantity) VALUES (UNHEX(REPLACE('6af35921-75c4-471a-914e-9597b4d3fce7', '-', '')), UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), '10.00', 2);
+
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('d9e5d6f8-6605-4dcd-a21a-3839407a0a1f', '-', '')), 'Eletronicos');
