@@ -31,6 +31,12 @@ public class Invoice {
 	private UUID id;
 	@OneToOne
 	@JoinColumn(name = "order_id")
+	// OneToOne with JoinTable example (in this case don't use @JoinColumn)
+	// @JoinTable(
+		// name = "invoices_orders",
+		// joinColumns = @JoinColumn(name = "invoice_id", unique = true),
+		// inverseJoinColumns = @JoinColumn(name = "order_id", unique = true)
+	// )
 	private Order order;
 	private String xml;
 	@Column(name = "emission_date")
