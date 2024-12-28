@@ -4,8 +4,8 @@ INSERT INTO products (id, name, price, description) VALUES (UNHEX(REPLACE('77c31
 INSERT INTO clients (id, name) VALUES (UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), 'João da Silva');
 INSERT INTO clients (id, name) VALUES (UNHEX(REPLACE('00492c10-234a-4388-9375-2da767ce0d6a', '-', '')), 'Manoel');
 
-INSERT INTO orders (id, total, ordered_at, status) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), '10.00', '2024-12-27 19:07:35.624173', 'WAITING');
-INSERT INTO orders (id, total, ordered_at, status) VALUES (UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), '10.00', '2024-12-27 02:36:35.624173', 'WAITING');
+INSERT INTO orders (id, client_id, total, ordered_at, status) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', '2024-12-27 19:07:35.624173', 'WAITING');
+INSERT INTO orders (id, client_id, total, ordered_at, status) VALUES (UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', '2024-12-27 02:36:35.624173', 'WAITING');
 
 INSERT INTO order_items (id, order_id, product_price, quantity) VALUES (UNHEX(REPLACE('6af35921-75c4-471a-914e-9597b4d3fce7', '-', '')), UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), '10.00', 2);
 

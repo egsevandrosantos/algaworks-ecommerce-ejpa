@@ -14,11 +14,13 @@ import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.OrderStatus;
+import com.algaworks.ecommerce.model.Product;
 
 public class RelationshipOneToManyTests extends EntityManagerTests {
 	@Test
 	public void testRelationshipClientOrder() {
-		Client client = entityManager.find(Client.class, UUID.fromString("737fac65-ec05-4173-a522-00833a22271b"));
+		Client client = new Client();
+		client.setName("Ciclano Torres");
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
@@ -26,9 +28,10 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		order.setTotal(BigDecimal.TEN);
 		
 		order.setClient(client);
-		client.getOrders().add(order);
+		client.setOrders(List.of(order));
 
 		entityManager.getTransaction().begin();
+		entityManager.persist(client);
 		entityManager.persist(order);
 		entityManager.getTransaction().commit();
 		
@@ -40,16 +43,21 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 	
 	@Test
 	public void testRelationshipOrderOrderItem() {
+		Client client = entityManager.find(Client.class, UUID.fromString("737fac65-ec05-4173-a522-00833a22271b"));
+		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+		
 		Order order = new Order();
 		order.setOrderedAt(Instant.now());
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(BigDecimal.TEN);
+		order.setClient(client);
 		
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
 		
 		orderItem.setOrder(order);
+		orderItem.setProduct(product);
 		order.setItems(List.of(orderItem));
 		
 		entityManager.getTransaction().begin();

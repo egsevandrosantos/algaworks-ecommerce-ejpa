@@ -36,7 +36,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@ManyToOne /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
+	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id")
 	private Client client;
 	@Column(name = "ordered_at")

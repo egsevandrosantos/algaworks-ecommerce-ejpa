@@ -39,12 +39,14 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 	@Test
 	public void testRelationshipOrderItemOrder() {
 		Order order = entityManager.find(Order.class, UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
+		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
 		
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
 		
 		orderItem.setOrder(order);
+		orderItem.setProduct(product);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(orderItem);
@@ -58,6 +60,7 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 	
 	@Test
 	public void testRelationshipOrderItemProduct() {
+		Order order = entityManager.find(Order.class, UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
 		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
 		
 		OrderItem orderItem = new OrderItem();
@@ -65,6 +68,7 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 		orderItem.setQuantity(1);
 		
 		orderItem.setProduct(product);
+		orderItem.setOrder(order);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(orderItem);

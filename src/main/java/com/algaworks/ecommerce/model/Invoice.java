@@ -29,7 +29,7 @@ public class Invoice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToOne
+	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id")
 	// OneToOne with JoinTable example (in this case don't use @JoinColumn)
 	// @JoinTable(

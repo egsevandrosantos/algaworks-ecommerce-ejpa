@@ -28,7 +28,7 @@ public class CardPayment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToOne
+	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id")
 	private Order order;
 	@Enumerated(EnumType.STRING)

@@ -27,10 +27,10 @@ public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id")
 	private Order order;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id")
 	private Product product;
 	@Column(name = "product_price")
