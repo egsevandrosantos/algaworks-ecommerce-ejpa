@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,6 +52,8 @@ public class Order {
 	private OrderAddress address;
 	@OneToMany(mappedBy = "order")
 	private List<OrderItem> items;
+	@OneToOne(mappedBy = "order")
+	private CardPayment cardPayment;
 	
 	
 	public boolean fullEquals(Object obj) {
