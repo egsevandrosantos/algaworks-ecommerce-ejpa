@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
@@ -14,7 +15,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +34,8 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 	private String name;
+	@Transient
+	private String firstName;
 	@Enumerated(EnumType.STRING)
 	private ClientSex sex;
 	@OneToMany(mappedBy = "client")
@@ -42,5 +47,14 @@ public class Client {
 		Client other = (Client) obj;
 		return Objects.equals(name, other.name)
 			&& Objects.equals(sex, other.sex);
+	}
+	
+	@PostLoad
+	public void postLoad() {
+		Optional.ofNullable(name)
+			.filter(name -> !name.isBlank())
+			.ifPresent(name -> {
+				this.firstName = name.split(" ")[0];
+			});
 	}
 }
