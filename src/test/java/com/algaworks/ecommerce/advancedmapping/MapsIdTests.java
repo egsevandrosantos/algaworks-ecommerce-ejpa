@@ -7,12 +7,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.CardPayment;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Invoice;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.OrderItemId;
 import com.algaworks.ecommerce.model.OrderStatus;
+import com.algaworks.ecommerce.model.PaymentStatus;
 import com.algaworks.ecommerce.model.Product;
 
 public class MapsIdTests extends EntityManagerTests {
@@ -64,5 +66,23 @@ public class MapsIdTests extends EntityManagerTests {
 		OrderItemId orderItemId = new OrderItemId(order.getId(), product.getId());
 		OrderItem actualOrderItem = entityManager.find(OrderItem.class, orderItemId);
 		Assertions.assertTrue(orderItem.fullEquals(actualOrderItem));
+	}
+	
+	@Test
+	public void testMapsIdCardPayment() {
+		Order order = entityManager.find(Order.class, UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
+		
+		CardPayment cardPayment = new CardPayment();
+		cardPayment.setOrder(order);
+		cardPayment.setStatus(PaymentStatus.PROCESSING);
+		
+		entityManager.getTransaction().begin();
+		entityManager.persist(cardPayment);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		CardPayment actualCardPayment = entityManager.find(CardPayment.class, cardPayment.getId());
+		Assertions.assertTrue(cardPayment.fullEquals(actualCardPayment));
 	}
 }
