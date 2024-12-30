@@ -12,6 +12,7 @@ import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
+import com.algaworks.ecommerce.model.OrderItemId;
 import com.algaworks.ecommerce.model.OrderStatus;
 import com.algaworks.ecommerce.model.Product;
 
@@ -56,10 +57,11 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
-		orderItem.setOrderId(order.getId());
 		orderItem.setOrder(order);
-		orderItem.setProductId(product.getId());
 		orderItem.setProduct(product);
+		// orderItem.setOrderId(order.getId()); // @IdClass
+		// orderItem.setProductId(product.getId()); // @IdClass
+		orderItem.setId(new OrderItemId(order.getId(), product.getId())); // @EmbeddedId
 		order.setItems(List.of(orderItem));
 		entityManager.persist(orderItem);
 
@@ -71,8 +73,7 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		Assertions.assertTrue(
 			order.fullEquals(actualOrder)
 				&& actualOrder.getItems().size() == 1
-				&& Objects.equals(orderItem.getOrderId(), actualOrder.getItems().get(0).getOrderId())
-				&& Objects.equals(orderItem.getProductId(), actualOrder.getItems().get(0).getProductId())
+				&& Objects.equals(orderItem.getId(), actualOrder.getItems().get(0).getId())
 		);
 	}
 }

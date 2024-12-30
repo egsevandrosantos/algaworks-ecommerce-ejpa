@@ -28,8 +28,9 @@ public class CompoundPrimaryKeyTests extends EntityManagerTests {
 		entityManager.persist(order);
 
 		OrderItem orderItem = new OrderItem();
-		orderItem.setOrderId(order.getId());
-		orderItem.setProductId(product.getId());
+		// orderItem.setOrderId(order.getId()); // @IdClass
+		// orderItem.setProductId(product.getId()); // @IdClass
+		orderItem.setId(new OrderItemId(order.getId(), product.getId())); // @EmbeddedId
 		orderItem.setOrder(order);
 		orderItem.setProduct(product);
 		orderItem.setProductPrice(product.getPrice());
