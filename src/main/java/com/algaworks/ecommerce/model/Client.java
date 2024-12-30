@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +24,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "clients")
+@EntityListeners(value = { LoggingLoadedEntityListener.class })
 public class Client {
 	@EqualsAndHashCode.Include
 	@Id

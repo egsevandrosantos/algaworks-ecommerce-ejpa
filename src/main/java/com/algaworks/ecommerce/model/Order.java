@@ -9,9 +9,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.algaworks.ecommerce.listener.GenerateInvoiceListener;
+import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +43,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "orders")
+@EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
 public class Order {
 	@EqualsAndHashCode.Include
 	@Id
@@ -66,6 +71,10 @@ public class Order {
 	private CardPayment cardPayment;
 	@OneToOne(mappedBy = "order")
 	private Invoice invoice;
+	
+	public boolean isPaid() {
+		return Objects.equals(status, OrderStatus.PAID);
+	}
 	
 	// @PrePersist // Only one for entity
 	// @PreUpdate // Only one for entity
