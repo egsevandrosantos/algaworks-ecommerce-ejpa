@@ -49,22 +49,30 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		order.setTotal(BigDecimal.TEN);
 		order.setClient(client);
 		
+		entityManager.getTransaction().begin();
+
+		entityManager.persist(order);
+		
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
-		
+		orderItem.setOrderId(order.getId());
 		orderItem.setOrder(order);
+		orderItem.setProductId(product.getId());
 		orderItem.setProduct(product);
 		order.setItems(List.of(orderItem));
-		
-		entityManager.getTransaction().begin();
-		entityManager.persist(order);
 		entityManager.persist(orderItem);
+
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
 		Order actualOrder = entityManager.find(Order.class, order.getId());
-		Assertions.assertTrue(order.fullEquals(actualOrder) && actualOrder.getItems().size() == 1 && Objects.equals(orderItem.getId(), actualOrder.getItems().get(0).getId()));
+		Assertions.assertTrue(
+			order.fullEquals(actualOrder)
+				&& actualOrder.getItems().size() == 1
+				&& Objects.equals(orderItem.getOrderId(), actualOrder.getItems().get(0).getOrderId())
+				&& Objects.equals(orderItem.getProductId(), actualOrder.getItems().get(0).getProductId())
+		);
 	}
 }

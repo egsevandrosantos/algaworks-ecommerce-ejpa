@@ -10,6 +10,7 @@ import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
+import com.algaworks.ecommerce.model.OrderItemId;
 import com.algaworks.ecommerce.model.OrderStatus;
 import com.algaworks.ecommerce.model.Product;
 
@@ -43,7 +44,9 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
 		
+		orderItem.setOrderId(order.getId());
 		orderItem.setOrder(order);
+		orderItem.setProductId(product.getId());
 		orderItem.setProduct(product);
 		
 		entityManager.getTransaction().begin();
@@ -52,20 +55,23 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 		
 		entityManager.clear();
 		
-		OrderItem actualOrderItem = entityManager.find(OrderItem.class, orderItem.getId());
+		OrderItemId orderItemId = new OrderItemId(orderItem.getOrderId(), orderItem.getProductId());
+		OrderItem actualOrderItem = entityManager.find(OrderItem.class, orderItemId);
 		Assertions.assertTrue(orderItem.fullEquals(actualOrderItem) && orderItem.getOrder().fullEquals(actualOrderItem.getOrder()));
 	}
 	
 	@Test
 	public void testRelationshipOrderItemProduct() {
 		Order order = entityManager.find(Order.class, UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
-		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+		Product product = entityManager.find(Product.class, UUID.fromString("73beb2ec-5a28-43db-93a8-0cdd823fc2c6"));
 		
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductPrice(BigDecimal.TEN);
 		orderItem.setQuantity(1);
 		
+		orderItem.setProductId(product.getId());
 		orderItem.setProduct(product);
+		orderItem.setOrderId(order.getId());
 		orderItem.setOrder(order);
 		
 		entityManager.getTransaction().begin();
@@ -74,7 +80,8 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 		
 		entityManager.clear();
 		
-		OrderItem actualOrderItem = entityManager.find(OrderItem.class, orderItem.getId());
+		OrderItemId orderItemId = new OrderItemId(orderItem.getOrderId(), orderItem.getProductId());
+		OrderItem actualOrderItem = entityManager.find(OrderItem.class, orderItemId);
 		Assertions.assertTrue(orderItem.fullEquals(actualOrderItem) && orderItem.getProduct().fullEquals(actualOrderItem.getProduct()));
 	}
 }
