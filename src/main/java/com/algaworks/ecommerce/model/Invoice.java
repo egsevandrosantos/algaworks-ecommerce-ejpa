@@ -9,10 +9,9 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -27,10 +26,11 @@ import lombok.Setter;
 public class Invoice {
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "order_id")
 	private UUID id;
+	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	// OneToOne with JoinTable example (in this case don't use @JoinColumn)
 	// @JoinTable(
 		// name = "invoices_orders",

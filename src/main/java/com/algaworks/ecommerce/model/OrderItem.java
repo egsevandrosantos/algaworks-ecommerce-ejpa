@@ -9,6 +9,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,11 +24,13 @@ public class OrderItem {
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrderItemId id;
+	@MapsId("orderId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "order_id", insertable = false, updatable = false)
+	@JoinColumn(name = "order_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Order order;
+	@MapsId("productId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id", insertable = false, updatable = false)
+	@JoinColumn(name = "product_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Product product;
 	@Column(name = "product_price")
 	private BigDecimal productPrice;
