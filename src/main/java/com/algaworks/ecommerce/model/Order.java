@@ -21,7 +21,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostRemove;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,8 +47,12 @@ public class Order {
 	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id")
 	private Client client;
-	@Column(name = "ordered_at")
-	private Instant orderedAt;
+	@Column(name = "created_at")
+	@Setter(value = AccessLevel.NONE)
+	private Instant createdAt;
+	@Column(name = "updated_at")
+	@Setter(value = AccessLevel.NONE)
+	private Instant updatedAt;
 	@Column(name = "finished_at")
 	private Instant finishedAt;
 	private BigDecimal total;
@@ -55,6 +67,62 @@ public class Order {
 	@OneToOne(mappedBy = "order")
 	private Invoice invoice;
 	
+	// @PrePersist // Only one for entity
+	// @PreUpdate // Only one for entity
+	public void calculateTotal() {
+		total = BigDecimal.ZERO;
+		Optional.ofNullable(items)
+			.ifPresent(items -> {
+				total = items.stream()
+					.map(OrderItem::getProductPrice)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			});
+	}
+	
+	private void auditingEntity() {
+		Instant now = Instant.now();
+		this.createdAt = Optional.ofNullable(this.createdAt).orElse(now);
+		this.updatedAt = now;
+	}
+	
+	@PrePersist // Only one for entity
+	public void prePersist() {
+		System.out.println("Pre persist");
+		this.auditingEntity();
+		this.calculateTotal();
+	}
+	
+	@PreUpdate // Only one for entity
+	public void preUpdate() {
+		System.out.println("Pre update");
+		this.auditingEntity();
+		this.calculateTotal();
+	}
+	
+	@PostPersist // Only one for entity
+	public void postPersist() {
+		System.out.println("Post persist");
+	}
+	
+	@PostUpdate // Only one for entity
+	public void postUpdate() {
+		System.out.println("Post update");
+	}
+	
+	@PreRemove // Only one for entity
+	public void preRemove() {
+		System.out.println("Pre remove");
+	}
+	
+	@PostRemove // Only one for entity
+	public void postRemove() {
+		System.out.println("Post remove");
+	}
+	
+	@PostLoad // Only one for entity
+	public void postLoad() {
+		System.out.println("Post load");
+	}
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
@@ -62,7 +130,8 @@ public class Order {
 		Order other = (Order) obj;
 		
 		DateTimeFormatter instantFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
-		return Objects.equals(Optional.ofNullable(orderedAt).map(instantFormatter::format), Optional.ofNullable(other.orderedAt).map(instantFormatter::format))
+		return Objects.equals(Optional.ofNullable(createdAt).map(instantFormatter::format), Optional.ofNullable(other.createdAt).map(instantFormatter::format))
+			&& Objects.equals(Optional.ofNullable(updatedAt).map(instantFormatter::format), Optional.ofNullable(other.updatedAt).map(instantFormatter::format))
 			&& Objects.equals(Optional.ofNullable(finishedAt).map(instantFormatter::format), Optional.ofNullable(other.finishedAt).map(instantFormatter::format))
 			&& Optional.ofNullable(total).map(total -> total.compareTo(other.total) == 0).orElse(total == other.total)
 			&& Objects.equals(status, other.status)

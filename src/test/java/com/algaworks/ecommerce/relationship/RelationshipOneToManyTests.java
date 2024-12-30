@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.relationship;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,7 +23,6 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
-		order.setOrderedAt(Instant.now());
 		order.setTotal(BigDecimal.TEN);
 		
 		order.setClient(client);
@@ -47,7 +45,6 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
 		
 		Order order = new Order();
-		order.setOrderedAt(Instant.now());
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(BigDecimal.TEN);
 		order.setClient(client);

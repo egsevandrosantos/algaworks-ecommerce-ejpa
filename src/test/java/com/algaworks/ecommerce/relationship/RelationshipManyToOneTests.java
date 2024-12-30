@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.relationship;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +20,6 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
-		order.setOrderedAt(Instant.now());
 		order.setTotal(BigDecimal.TEN);
 		
 		order.setClient(client);
