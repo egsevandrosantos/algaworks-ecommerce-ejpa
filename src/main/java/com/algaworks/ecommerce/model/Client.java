@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
@@ -16,9 +15,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
@@ -33,16 +29,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "clients")
 @EntityListeners(value = { LoggingLoadedEntityListener.class })
 @SecondaryTable(name = "clients_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"))
-public class Client {
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+public class Client extends BaseEntityId {
 	private String name;
 	@Transient
 	private String firstName;

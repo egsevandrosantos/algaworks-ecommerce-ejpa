@@ -2,13 +2,11 @@ package com.algaworks.ecommerce.model;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
@@ -19,13 +17,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "card_payments")
-public class CardPayment {
-	@EqualsAndHashCode.Include
-	@Id
-	private UUID id;
+public class CardPayment extends BaseEntityId {
 	@MapsId
 	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id")

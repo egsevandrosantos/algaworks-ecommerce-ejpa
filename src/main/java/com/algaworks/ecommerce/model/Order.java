@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.algaworks.ecommerce.listener.GenerateInvoiceListener;
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
@@ -18,9 +17,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -40,15 +36,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "orders")
 @EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
-public class Order {
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+public class Order extends BaseEntityId {
 	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id")
 	private Client client;
