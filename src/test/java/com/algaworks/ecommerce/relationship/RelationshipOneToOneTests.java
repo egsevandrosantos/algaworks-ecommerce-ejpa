@@ -30,7 +30,7 @@ public class RelationshipOneToOneTests extends EntityManagerTests {
 		entityManager.clear();
 		
 		Order actualOrder = entityManager.find(Order.class, order.getId());
-		Assertions.assertTrue(actualOrder.getCardPayment().fullEquals(cardPayment));
+		Assertions.assertTrue(actualOrder.getPayment().fullEquals(cardPayment));
 	}
 	
 	@Test

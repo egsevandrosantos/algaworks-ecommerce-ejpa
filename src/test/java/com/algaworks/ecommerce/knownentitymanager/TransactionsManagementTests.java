@@ -17,7 +17,7 @@ public class TransactionsManagementTests extends EntityManagerTests {
 		entityManager.getTransaction().begin();
 		order.setStatus(OrderStatus.PAID);
 		entityManager.merge(order);
-		if (order.getCardPayment() != null) {
+		if (order.getPayment() != null) {
 			entityManager.getTransaction().commit();
 		} else {
 			entityManager.getTransaction().rollback();
@@ -53,7 +53,7 @@ public class TransactionsManagementTests extends EntityManagerTests {
 	private void setPaidToOrder(Order order) {
 		order.setStatus(OrderStatus.PAID);
 
-		if (order.getCardPayment() == null) {
+		if (order.getPayment() == null) {
 			throw new IllegalStateException("Order don't have a payment method");
 		}		
 	}

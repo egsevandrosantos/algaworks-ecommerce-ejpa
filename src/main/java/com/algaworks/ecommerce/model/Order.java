@@ -60,7 +60,7 @@ public class Order extends BaseEntityId {
 	@OneToMany(mappedBy = "order") /*fetch = FetchType.EAGER*/
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
-	private CardPayment cardPayment;
+	private Payment payment;
 	@OneToOne(mappedBy = "order")
 	private Invoice invoice;
 	

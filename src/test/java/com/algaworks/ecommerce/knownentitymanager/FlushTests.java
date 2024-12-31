@@ -26,7 +26,7 @@ public class FlushTests extends EntityManagerTests {
 			// Used in rare cases
 			entityManager.flush();
 			
-			if (order.getCardPayment() == null) {
+			if (order.getPayment() == null) {
 				throw new IllegalStateException("Order don't have a payment method");
 			}
 			
