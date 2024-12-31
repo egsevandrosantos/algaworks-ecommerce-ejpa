@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class MapsIdTests extends EntityManagerTests {
 		// invoice.setId(order.getId()); // Unnecessary with @MapsId
 		invoice.setOrder(order);
 		invoice.setEmissionDate(Instant.now());
-		invoice.setXml("<xml />");
+		invoice.setXml(loadInvoiceExample());
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(invoice);
@@ -84,5 +85,14 @@ public class MapsIdTests extends EntityManagerTests {
 		
 		CardPayment actualCardPayment = entityManager.find(CardPayment.class, cardPayment.getId());
 		Assertions.assertTrue(cardPayment.fullEquals(actualCardPayment));
+	}
+	
+	private byte[] loadInvoiceExample() {
+		try {
+			return MapsIdTests.class.getResourceAsStream("/invoice.xml").readAllBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }

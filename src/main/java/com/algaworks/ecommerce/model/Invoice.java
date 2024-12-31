@@ -11,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -38,7 +39,8 @@ public class Invoice {
 		// inverseJoinColumns = @JoinColumn(name = "order_id", unique = true)
 	// )
 	private Order order;
-	private String xml;
+	@Lob
+	private byte[] xml;
 	@Column(name = "emission_date")
 	private Instant emissionDate;
 	
@@ -48,7 +50,7 @@ public class Invoice {
 		Invoice other = (Invoice) obj;
 		DateTimeFormatter instantFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
 		return Objects.equals(Optional.ofNullable(order).map(Order::getId), Optional.ofNullable(other.order).map(Order::getId))
-			&& Objects.equals(xml, other.xml)
+			&& Objects.deepEquals(xml, other.xml)
 			&& Objects.equals(Optional.ofNullable(emissionDate).map(instantFormatter::format), Optional.ofNullable(other.emissionDate).map(instantFormatter::format));
 	}
 }
