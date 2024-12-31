@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Attribute;
+import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Product;
 
 public class ElementCollectionTests extends EntityManagerTests {
@@ -37,5 +39,19 @@ public class ElementCollectionTests extends EntityManagerTests {
 		
 		Product actualProduct = entityManager.find(Product.class, product.getId());
 		Assertions.assertTrue(actualProduct.getAttributes() != null && !actualProduct.getAttributes().isEmpty());
+	}
+	
+	@Test
+	public void testElementCollectionContatcsClient() {
+		Client client = entityManager.find(Client.class, UUID.fromString("737fac65-ec05-4173-a522-00833a22271b"));
+		
+		entityManager.getTransaction().begin();
+		client.setContacts(Collections.singletonMap("email", "joao.da.silva@example.com"));
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Client actualClient = entityManager.find(Client.class, client.getId());
+		Assertions.assertTrue(actualClient.getContacts() != null && !actualClient.getContacts().isEmpty());
 	}
 }
