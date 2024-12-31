@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +23,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PostLoad;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.EqualsAndHashCode;
@@ -34,6 +37,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "clients")
 @EntityListeners(value = { LoggingLoadedEntityListener.class })
+@SecondaryTable(name = "clients_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"))
 public class Client {
 	@EqualsAndHashCode.Include
 	@Id
@@ -43,7 +47,10 @@ public class Client {
 	@Transient
 	private String firstName;
 	@Enumerated(EnumType.STRING)
+	@Column(table = "clients_details")
 	private ClientSex sex;
+	@Column(table = "clients_details", name = "birth_date")
+	private LocalDate birthDate;
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders;
 	@ElementCollection
@@ -60,7 +67,8 @@ public class Client {
 		
 		Client other = (Client) obj;
 		return Objects.equals(name, other.name)
-			&& Objects.equals(sex, other.sex);
+			&& Objects.equals(sex, other.sex)
+			&& Objects.equals(birthDate, other.birthDate);
 	}
 	
 	@PostLoad
