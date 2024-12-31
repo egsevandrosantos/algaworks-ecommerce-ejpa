@@ -3,9 +3,13 @@ package com.algaworks.ecommerce.model;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
@@ -19,6 +23,8 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "payments")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Default for inheritance if not has configuration
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING) // Default if not has configuration
 public abstract class Payment extends BaseEntityId {
 	@MapsId
 	@OneToOne(optional = false)
