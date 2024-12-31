@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.Attribute;
 import com.algaworks.ecommerce.model.Product;
 
 public class ElementCollectionTests extends EntityManagerTests {
@@ -22,5 +23,19 @@ public class ElementCollectionTests extends EntityManagerTests {
 		
 		Product actualProduct = entityManager.find(Product.class, product.getId());
 		Assertions.assertTrue(actualProduct.getTags() != null && !actualProduct.getTags().isEmpty());
+	}
+	
+	@Test
+	public void testElementCollectionAttributesProduct() {
+		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+		
+		entityManager.getTransaction().begin();
+		product.setAttributes(List.of(new Attribute("Window", "320x600 px")));
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, product.getId());
+		Assertions.assertTrue(actualProduct.getAttributes() != null && !actualProduct.getAttributes().isEmpty());
 	}
 }

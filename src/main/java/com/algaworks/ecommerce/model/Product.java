@@ -55,6 +55,12 @@ public class Product {
 	)
 	@Column(name = "tag") // Name to column in another table
 	private List<String> tags;
+	@ElementCollection
+	@CollectionTable(
+		name = "products_attributes",
+		joinColumns = @JoinColumn(name = "product_id")
+	)
+	private List<Attribute> attributes;
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
