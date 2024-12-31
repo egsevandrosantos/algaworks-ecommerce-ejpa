@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,6 +48,13 @@ public class Product {
 	private List<Category> categories;
 	@OneToOne(mappedBy = "product")
 	private Stock stock;
+	@ElementCollection
+	@CollectionTable(
+		name = "products_tags", // Name of table
+		joinColumns = @JoinColumn(name = "product_id") // this.id to product_id in another table 
+	)
+	@Column(name = "tag") // Name to column in another table
+	private List<String> tags;
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
