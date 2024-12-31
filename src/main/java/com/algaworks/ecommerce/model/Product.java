@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -61,6 +62,8 @@ public class Product {
 		joinColumns = @JoinColumn(name = "product_id")
 	)
 	private List<Attribute> attributes;
+	@Lob
+	private byte[] photo;
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;
@@ -68,6 +71,7 @@ public class Product {
 		Product other = (Product) obj;
 		return Objects.equals(name, other.name)
 			&& Objects.equals(description, other.description)
-			&& Objects.equals(price, other.price);
+			&& Objects.equals(price, other.price)
+			&& Objects.deepEquals(photo, other.photo);
 	}
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Invoice;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Product;
 
 public class SaveFileTests extends EntityManagerTests {
 	@Test
@@ -44,9 +45,32 @@ public class SaveFileTests extends EntityManagerTests {
 		Assertions.assertTrue(invoice.fullEquals(actualInvoice));
 	}
 	
+	@Test
+	public void testSaveProductPhoto() {
+		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+		
+		entityManager.getTransaction().begin();
+		product.setPhoto(loadPhoto());
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, product.getId());
+		Assertions.assertTrue(product.fullEquals(actualProduct));
+	}
+	
 	private byte[] loadInvoiceExample() {
 		try {
 			return SaveFileTests.class.getResourceAsStream("/invoice.xml").readAllBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private byte[] loadPhoto() {
+		try {
+			return SaveFileTests.class.getResourceAsStream("/photo.jpg").readAllBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
