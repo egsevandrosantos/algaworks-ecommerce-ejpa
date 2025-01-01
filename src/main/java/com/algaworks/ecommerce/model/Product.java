@@ -61,8 +61,10 @@ public class Product extends BaseEntityId {
 	@ManyToMany
 	@JoinTable(
 		name = "products_categories",
-		joinColumns = @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_category_product")),
-		inverseJoinColumns = @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
+		// foreignKey = @ForeignKey(name = "fk_category_product"),
+		// inverseForeignKey = @ForeignKey(name = "fk_product_category"),
+		joinColumns = @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_category_product")),
+		inverseJoinColumns = @JoinColumn(name = "category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))
 	)
 	private List<Category> categories;
 	@OneToOne(mappedBy = "product")
