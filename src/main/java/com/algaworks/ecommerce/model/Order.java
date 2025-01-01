@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -42,7 +43,7 @@ import lombok.Setter;
 @EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
 public class Order extends BaseEntityId {
 	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
-	@JoinColumn(name = "client_id")
+	@JoinColumn(name = "client_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_client"))
 	private Client client;
 	@Column(name = "created_at", nullable = false)
 	@Setter(value = AccessLevel.NONE)

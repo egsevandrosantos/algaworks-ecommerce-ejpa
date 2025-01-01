@@ -9,6 +9,7 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
@@ -29,7 +30,7 @@ import lombok.Setter;
 public abstract class Payment extends BaseEntityId {
 	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_payment_order"))
 	private Order order;
 
 	@Enumerated(EnumType.STRING)

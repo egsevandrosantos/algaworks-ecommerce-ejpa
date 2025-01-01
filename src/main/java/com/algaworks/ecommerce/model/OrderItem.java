@@ -7,6 +7,7 @@ import java.util.Optional;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -26,11 +27,11 @@ public class OrderItem {
 	private OrderItemId id;
 	@MapsId("orderId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "order_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
+	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Order order;
 	@MapsId("productId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
+	@JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_product")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Product product;
 	@Column(name = "product_price", precision = 19, scale = 2, nullable = false)
 	private BigDecimal productPrice;

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
@@ -25,7 +26,7 @@ import lombok.Setter;
 public class Invoice extends BaseEntityId {
 	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "order_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
+	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_invoice_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	// OneToOne with JoinTable example (in this case don't use @JoinColumn)
 	// @JoinTable(
 		// name = "invoices_orders",
