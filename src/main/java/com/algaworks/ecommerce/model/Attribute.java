@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Attribute {
 	@EqualsAndHashCode.Include
+	@Column(length = 100, nullable = false)
 	private String name;
 	
 	@EqualsAndHashCode.Include

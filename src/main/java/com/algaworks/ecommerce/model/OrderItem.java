@@ -32,8 +32,9 @@ public class OrderItem {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id") // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Product product;
-	@Column(name = "product_price")
+	@Column(name = "product_price", precision = 19, scale = 2, nullable = false)
 	private BigDecimal productPrice;
+	@Column(nullable = false)
 	private Integer quantity;
 	
 	public boolean fullEquals(Object obj) {

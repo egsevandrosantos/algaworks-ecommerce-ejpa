@@ -21,6 +21,7 @@ public class RelationshipOneToManyTests extends EntityManagerTests {
 	public void testRelationshipClientOrder() {
 		Client client = new Client();
 		client.setName("Ciclano Torres");
+		client.setCpf("027.643.113-89");
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);

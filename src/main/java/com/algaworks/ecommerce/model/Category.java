@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -30,6 +31,7 @@ import lombok.Setter;
 	}
 )
 public class Category extends BaseEntityId {
+	@Column(length = 100, nullable = false)
 	private String name;
 	@ManyToOne
 	@JoinColumn(name = "parent_id")

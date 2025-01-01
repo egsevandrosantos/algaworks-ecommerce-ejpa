@@ -51,12 +51,14 @@ import lombok.Setter;
 @EntityListeners(value = { LoggingLoadedEntityListener.class })
 @SecondaryTable(name = "clients_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"))
 public class Client extends BaseEntityId {
+	@Column(length = 100, nullable = false)
 	private String name;
 	@Transient
 	private String firstName;
+	@Column(length = 14, nullable = false)
 	private String cpf;
 	@Enumerated(EnumType.STRING)
-	@Column(table = "clients_details")
+	@Column(table = "clients_details", nullable = false)
 	private ClientSex sex;
 	@Column(table = "clients_details", name = "birth_date")
 	private LocalDate birthDate;

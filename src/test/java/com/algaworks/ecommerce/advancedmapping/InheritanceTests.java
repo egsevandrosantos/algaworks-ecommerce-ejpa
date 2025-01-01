@@ -18,6 +18,7 @@ public class InheritanceTests extends EntityManagerTests {
 	public void testInheritance() {
 		Client client = new Client();
 		client.setName("Fernanda Morais");
+		client.setCpf("751.128.762-04");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(client);

@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.knownentitymanager;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,12 @@ public class PersistenceContextTests extends EntityManagerTests {
 		Product newProductPersist = new Product();
 		newProductPersist.setName("Caneca para café");
 		newProductPersist.setDescription("");
+		newProductPersist.setCreatedAt(Instant.now());
 		
 		Product newProductMerge = new Product();
 		newProductMerge.setName("Caneca para chá");
 		newProductMerge.setDescription("");
+		newProductMerge.setCreatedAt(Instant.now());
 		
 		entityManager.getTransaction().begin();
 		

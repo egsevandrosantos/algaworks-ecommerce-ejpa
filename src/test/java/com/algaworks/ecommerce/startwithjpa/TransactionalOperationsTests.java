@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.startwithjpa;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
@@ -40,6 +41,7 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		expectedProduct.setName("Camera Canon");
 		expectedProduct.setDescription("A melhor definição para suas fotos.");
 		expectedProduct.setPrice(new BigDecimal("5000.00"));
+		expectedProduct.setCreatedAt(Instant.now());
 		
 		// Out of transaction the code works because persist method wait for begin transaction
 		// But if no transaction initialize then insert query is not executed
@@ -131,6 +133,7 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 		expectedProduct.setName("Microphone Rode Videmic");
 		expectedProduct.setDescription("A melhor qualidade de som.");
 		expectedProduct.setPrice(new BigDecimal("1000.00"));
+		expectedProduct.setCreatedAt(Instant.now());
 		
 		// Out of transaction the code works because merge method wait for begin transaction
 		// But if no transaction initialize then insert query is not executed
@@ -156,6 +159,7 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 			productToPersist.setName("Smartphone One Plus");
 			productToPersist.setDescription("O processador mais rápido");
 			productToPersist.setPrice(new BigDecimal("2000.00"));
+			productToPersist.setCreatedAt(Instant.now());
 		
 			entityManager.getTransaction().begin();
 			// Insert product and managed by entity manager
@@ -175,6 +179,7 @@ public class TransactionalOperationsTests extends EntityManagerTests {
 			productToMerge.setName("Notebook Dell");
 			productToMerge.setDescription("O melhor da categoria");
 			productToMerge.setPrice(new BigDecimal("2000.00"));
+			productToMerge.setCreatedAt(Instant.now());
 			
 			entityManager.getTransaction().begin();
 			// Select to get object if exists and add a copy of object to managed by entity manager

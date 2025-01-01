@@ -44,7 +44,7 @@ public class Order extends BaseEntityId {
 	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id")
 	private Client client;
-	@Column(name = "created_at")
+	@Column(name = "created_at", nullable = false)
 	@Setter(value = AccessLevel.NONE)
 	private Instant createdAt;
 	@Column(name = "updated_at")

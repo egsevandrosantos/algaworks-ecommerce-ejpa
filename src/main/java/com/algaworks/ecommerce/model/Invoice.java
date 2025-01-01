@@ -34,8 +34,9 @@ public class Invoice extends BaseEntityId {
 	// )
 	private Order order;
 	@Lob
+	@Column(columnDefinition = "LONGBLOB NOT NULL")
 	private byte[] xml;
-	@Column(name = "emission_date")
+	@Column(name = "emission_date", nullable = false)
 	private Instant emissionDate;
 	
 	public boolean fullEquals(Object obj) {

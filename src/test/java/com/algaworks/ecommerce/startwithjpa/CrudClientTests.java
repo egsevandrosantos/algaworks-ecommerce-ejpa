@@ -13,6 +13,7 @@ public class CrudClientTests extends EntityManagerTests {
 	public void create() {
 		Client expected = new Client();
 		expected.setName("Maria das Flores");
+		expected.setCpf("718.611.817-87");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(expected);

@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -32,6 +33,7 @@ public abstract class Payment extends BaseEntityId {
 	private Order order;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private PaymentStatus status;
 	
 	public boolean fullEquals(Object obj) {

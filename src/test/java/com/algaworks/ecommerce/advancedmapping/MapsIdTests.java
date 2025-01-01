@@ -76,6 +76,7 @@ public class MapsIdTests extends EntityManagerTests {
 		CardPayment cardPayment = new CardPayment();
 		cardPayment.setOrder(order);
 		cardPayment.setStatus(PaymentStatus.PROCESSING);
+		cardPayment.setCardNumber("1234 5678 9012 3456");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(cardPayment);

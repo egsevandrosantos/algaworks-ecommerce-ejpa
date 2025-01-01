@@ -52,7 +52,7 @@ public class Product extends BaseEntityId {
 	// 10 are total, 8 integers and 2 decimals
 	@Column(precision = 10, scale = 2) // DECIMAL(10,2)
 	private BigDecimal price;
-	@Column(name = "created_at", updatable = false)
+	@Column(name = "created_at", updatable = false, nullable = false)
 	private Instant createdAt;
 	@Column(name = "updated_at", insertable = false) // For tests purpose
 	private Instant updatedAt;
@@ -70,7 +70,7 @@ public class Product extends BaseEntityId {
 		name = "products_tags", // Name of table
 		joinColumns = @JoinColumn(name = "product_id") // this.id to product_id in another table 
 	)
-	@Column(name = "tag") // Name to column in another table
+	@Column(name = "tag", length = 50, nullable = false) // Name to column in another table
 	private List<String> tags;
 	@ElementCollection
 	@CollectionTable(

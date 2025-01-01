@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.relationship;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class RelationshipOneToOneTests extends EntityManagerTests {
 		Invoice invoice = new Invoice();
 		invoice.setEmissionDate(Instant.now());
 		invoice.setOrder(order);
+		invoice.setXml(loadInvoiceExample());
 
 		entityManager.getTransaction().begin();
 		entityManager.persist(invoice);
@@ -49,5 +51,14 @@ public class RelationshipOneToOneTests extends EntityManagerTests {
 		
 		Order actualOrder = entityManager.find(Order.class, order.getId());
 		Assertions.assertTrue(actualOrder.getInvoice().fullEquals(invoice));
+	}
+	
+	private byte[] loadInvoiceExample() {
+		try {
+			return this.getClass().getResourceAsStream("/invoice.xml").readAllBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }
