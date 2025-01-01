@@ -50,7 +50,11 @@ import lombok.Setter;
 	}
 )
 @EntityListeners(value = { LoggingLoadedEntityListener.class })
-@SecondaryTable(name = "clients_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"))
+@SecondaryTable(
+	name = "clients_details",
+	pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"),
+	foreignKey = @ForeignKey(name = "fk_client_detail_client")
+)
 public class Client extends BaseEntityId {
 	@Column(length = 100, nullable = false)
 	private String name;
