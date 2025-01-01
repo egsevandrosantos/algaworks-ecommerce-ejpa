@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -18,7 +19,16 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "categories")
+@Table(
+	name = "categories",
+	indexes = {
+		@Index(
+			name = "idx_name",
+			columnList = "name",
+			unique = true
+		)
+	}
+)
 public class Category extends BaseEntityId {
 	private String name;
 	@ManyToOne

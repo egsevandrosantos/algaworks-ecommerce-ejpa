@@ -9,12 +9,14 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +25,21 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "products")
+@Table(
+	name = "products",
+	uniqueConstraints = {
+		@UniqueConstraint(
+			name = "unq_name",
+			columnNames = { "name" }
+		)
+	},
+	indexes = {
+		@Index(
+			name = "idx_name",
+			columnList = "name"
+		)
+	}
+)
 public class Product extends BaseEntityId {
 	private String name;
 	private String description;
