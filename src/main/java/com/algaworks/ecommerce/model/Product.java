@@ -47,7 +47,8 @@ public class Product extends BaseEntityId {
 	@Column(length = 100, nullable = false)
 	private String name;
 	// columnDefinition = SQL
-	@Column(columnDefinition = "VARCHAR(275) NOT NULL DEFAULT 'description'")
+	// @Column(columnDefinition = "VARCHAR(275) NOT NULL DEFAULT 'description'")
+	@Lob // longtext
 	private String description;
 	// 10 are total, 8 integers and 2 decimals
 	@Column(precision = 10, scale = 2) // DECIMAL(10,2)
