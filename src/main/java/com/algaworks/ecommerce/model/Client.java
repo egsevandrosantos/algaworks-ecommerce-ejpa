@@ -15,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
@@ -23,6 +24,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,13 +33,28 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "clients")
+@Table(
+	name = "clients",
+	uniqueConstraints = {
+		@UniqueConstraint(
+			name = "unq_cpf",
+			columnNames = { "cpf" }
+		) 
+	},
+	indexes = {
+		@Index(
+			name = "idx_name",
+			columnList = "name" // Separated by ',' -> Column name
+		)
+	}
+)
 @EntityListeners(value = { LoggingLoadedEntityListener.class })
 @SecondaryTable(name = "clients_details", pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"))
 public class Client extends BaseEntityId {
 	private String name;
 	@Transient
 	private String firstName;
+	private String cpf;
 	@Enumerated(EnumType.STRING)
 	@Column(table = "clients_details")
 	private ClientSex sex;
@@ -60,7 +77,8 @@ public class Client extends BaseEntityId {
 		Client other = (Client) obj;
 		return Objects.equals(name, other.name)
 			&& Objects.equals(sex, other.sex)
-			&& Objects.equals(birthDate, other.birthDate);
+			&& Objects.equals(birthDate, other.birthDate)
+			&& Objects.equals(cpf, other.cpf);
 	}
 	
 	@PostLoad
