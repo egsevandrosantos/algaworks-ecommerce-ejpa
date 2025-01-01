@@ -11,8 +11,17 @@
             <property name="jakarta.persistence.jdbc.password" value="admin" />
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 
-			<!-- DO NOT USE IN PRODUCTION -->
+			<!-- DO NOT USE IN PRODUCTION -> EXECUTED WHEN FACTORY IS CREATED -->
+            <!-- EXECUTE DROP, CREATE AND SEEDS -->
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <!-- NO EXECUTE DROP, CREATE AND SEEDS -->
+            <!-- <property name="jakarta.persistence.schema-generation.database.action" value="none"/> -->
+            <!-- ONLY DROP -->
+            <!-- <property name="jakarta.persistence.schema-generation.database.action" value="drop"/> -->
+            <!-- ONLY CREATE AND SEEDS -->
+            <!-- <property name="jakarta.persistence.schema-generation.database.action" value="create"/> -->
+            
+            <!-- DO NOT USE IN PRODUCTION -->
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/seeds.sql"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
