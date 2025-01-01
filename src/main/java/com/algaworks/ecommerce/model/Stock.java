@@ -8,6 +8,7 @@ import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,15 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "stocks")
+@Table(
+	name = "stocks",
+	uniqueConstraints = {
+		@UniqueConstraint(
+			name = "unq_product",
+			columnNames = { "product_id" }
+		)
+	}
+)
 public class Stock extends BaseEntityId {
 	@OneToOne(optional = false)
 	@JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_stock_product"))
