@@ -13,7 +13,7 @@ public class CategoryRelationshipsTests extends EntityManagerTests {
 	@Test
 	public void testParentRelationship() {
 		Category parent = new Category();
-		parent.setName("Electronics");
+		parent.setName("Mobile electronics");
 		
 		Category child = new Category();
 		child.setName("Cellphones");
@@ -35,10 +35,10 @@ public class CategoryRelationshipsTests extends EntityManagerTests {
 	@Test
 	public void testChildrenRelationship() {
 		Category parent = new Category();
-		parent.setName("Electronics");
+		parent.setName("Utilities electronics");
 		
 		Category child = new Category();
-		child.setName("Cellphones");
+		child.setName("Notebooks");
 		
 		child.setParent(parent);
 		parent.setChildren(List.of(child));

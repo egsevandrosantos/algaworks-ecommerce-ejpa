@@ -41,8 +41,16 @@ import lombok.Setter;
 	}
 )
 public class Product extends BaseEntityId {
+	// Without @Column with customizations default is VARCHAR(255)
+	// With this customization: VARCHAR(100) NOT NULL
+	// unique = true -> Create a unique constraint (name for index generate auto and only for single attribute)
+	@Column(length = 100, nullable = false)
 	private String name;
+	// columnDefinition = SQL
+	@Column(columnDefinition = "VARCHAR(275) NOT NULL DEFAULT 'description'")
 	private String description;
+	// 10 are total, 8 integers and 2 decimals
+	@Column(precision = 10, scale = 2) // DECIMAL(10,2)
 	private BigDecimal price;
 	@Column(name = "created_at", updatable = false)
 	private Instant createdAt;

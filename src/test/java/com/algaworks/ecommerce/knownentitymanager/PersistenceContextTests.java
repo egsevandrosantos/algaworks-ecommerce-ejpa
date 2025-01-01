@@ -16,9 +16,11 @@ public class PersistenceContextTests extends EntityManagerTests {
 		
 		Product newProductPersist = new Product();
 		newProductPersist.setName("Caneca para café");
+		newProductPersist.setDescription("");
 		
 		Product newProductMerge = new Product();
 		newProductMerge.setName("Caneca para chá");
+		newProductMerge.setDescription("");
 		
 		entityManager.getTransaction().begin();
 		

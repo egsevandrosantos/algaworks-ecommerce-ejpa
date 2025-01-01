@@ -52,8 +52,10 @@ public class Order extends BaseEntityId {
 	private Instant updatedAt;
 	@Column(name = "finished_at")
 	private Instant finishedAt;
+	@Column(precision = 19, scale = 2, nullable = false)
 	private BigDecimal total;
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private OrderStatus status;
 	@Embedded
 	private OrderAddress address;
