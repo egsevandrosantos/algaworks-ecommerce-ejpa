@@ -15,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
@@ -67,7 +68,7 @@ public class Client extends BaseEntityId {
 	@ElementCollection
 	@CollectionTable(
 		name = "clients_contacts",
-		joinColumns = @JoinColumn(name = "client_id")
+		joinColumns = @JoinColumn(name = "client_id", foreignKey = @ForeignKey(name = "fk_client_contact"))
 	)
 	@MapKeyColumn(name = "type") // name to column represented by first type of map (key)
 	@Column(name = "description") // name to column represented by second type of map (value)

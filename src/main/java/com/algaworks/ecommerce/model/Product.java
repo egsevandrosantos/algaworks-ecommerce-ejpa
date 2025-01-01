@@ -9,6 +9,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -60,8 +61,8 @@ public class Product extends BaseEntityId {
 	@ManyToMany
 	@JoinTable(
 		name = "products_categories",
-		joinColumns = @JoinColumn(name = "product_id"),
-		inverseJoinColumns = @JoinColumn(name = "category_id")
+		joinColumns = @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_category_product")),
+		inverseJoinColumns = @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
 	)
 	private List<Category> categories;
 	@OneToOne(mappedBy = "product")
@@ -69,14 +70,14 @@ public class Product extends BaseEntityId {
 	@ElementCollection
 	@CollectionTable(
 		name = "products_tags", // Name of table
-		joinColumns = @JoinColumn(name = "product_id") // this.id to product_id in another table 
+		joinColumns = @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_product_tag")) // this.id to product_id in another table 
 	)
 	@Column(name = "tag", length = 50, nullable = false) // Name to column in another table
 	private List<String> tags;
 	@ElementCollection
 	@CollectionTable(
 		name = "products_attributes",
-		joinColumns = @JoinColumn(name = "product_id")
+		joinColumns = @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_product_attribute"))
 	)
 	private List<Attribute> attributes;
 	@Lob

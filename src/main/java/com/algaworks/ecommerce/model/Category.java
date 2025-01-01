@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -34,7 +35,7 @@ public class Category extends BaseEntityId {
 	@Column(length = 100, nullable = false)
 	private String name;
 	@ManyToOne
-	@JoinColumn(name = "parent_id")
+	@JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "fk_category_category"))
 	private Category parent;
 	@OneToMany(mappedBy = "parent")
 	private List<Category> children;
