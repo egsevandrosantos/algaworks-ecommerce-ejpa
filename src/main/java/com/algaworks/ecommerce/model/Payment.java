@@ -23,7 +23,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "payments") // Used in inheritance with SINGLE_TABLE and JOINED
-@Inheritance(strategy = InheritanceType.JOINED) // Default SINGLE_TABLE for inheritance if not has configuration
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Default SINGLE_TABLE for inheritance if not has configuration
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING) // Default if not has configuration. Used for inheritance with SINGLE_TABLE and JOINED
 public abstract class Payment extends BaseEntityId {
 	@MapsId
