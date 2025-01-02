@@ -1,0 +1,1 @@
+-- Actually all tables are dropped by metadata

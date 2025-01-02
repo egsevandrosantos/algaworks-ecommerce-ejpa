@@ -21,9 +21,20 @@
             <!-- ONLY CREATE AND SEEDS -->
             <!-- <property name="jakarta.persistence.schema-generation.database.action" value="create"/> -->
             
+            <!-- CREATE WITH METADATA JPA -->
+            <!-- <property name="jakarta.persistence.schema-generation.create-source" value="metadata"/> -->
+            <!-- CREATE WITH SCRIPT -->
+            <!-- <property name="jakarta.persistence.schema-generation.create-source" value="script"/> -->
+            <!-- CREATE WITH METADATA THEN SCRIPT -->
+            <property name="jakarta.persistence.schema-generation.create-source" value="metadata-then-script"/>
+            <!-- CREATE WITH SCRIPT THEN METADATA -->
+            <!-- <property name="jakarta.persistence.schema-generation.create-source" value="script-then-metadata"/> -->
+            <!-- THE SAME OPTIONS ABOVE TO DROP. THE VALUES DON'T NEED EQUALS -->
+            <property name="jakarta.persistence.schema-generation.drop-source" value="metadata-then-script"/>
+            
             <!-- SCRIPT TO CREATE AND DROP TABLES -->
-            <property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-script.sql"/>
-            <property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-script.sql"/>
+            <property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-metadata-then-script.sql"/>
+            <property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-metadata-then-script.sql"/>
             
             <!-- DO NOT USE IN PRODUCTION -->
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/seeds.sql"/>
