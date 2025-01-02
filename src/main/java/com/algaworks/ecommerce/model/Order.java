@@ -11,6 +11,7 @@ import java.util.Optional;
 import com.algaworks.ecommerce.listener.GenerateInvoiceListener;
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -42,7 +43,8 @@ import lombok.Setter;
 @Table(name = "orders")
 @EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
 public class Order extends BaseEntityId {
-	@ManyToOne(optional = false) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
+	// CascadeType.PERSIST = Persist client and persist order
+	@ManyToOne(optional = false, cascade = CascadeType.PERSIST) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_client"))
 	private Client client;
 	@Column(name = "created_at", nullable = false)
@@ -60,7 +62,8 @@ public class Order extends BaseEntityId {
 	private OrderStatus status;
 	@Embedded
 	private OrderAddress address;
-	@OneToMany(mappedBy = "order") /*fetch = FetchType.EAGER*/
+	// CascadeType.PERSIST = Persist order and persist items
+	@OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST) /*fetch = FetchType.EAGER*/
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private Payment payment;

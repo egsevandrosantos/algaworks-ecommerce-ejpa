@@ -25,6 +25,7 @@ public class OrderItem {
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrderItemId id;
+	// Don't need CascadeType.PERSIST to persist item and persist order because order is part of PK (@MapsId), so JPA persist automatically
 	@MapsId("orderId")
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
