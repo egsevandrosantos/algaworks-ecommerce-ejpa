@@ -21,6 +21,10 @@
             <!-- ONLY CREATE AND SEEDS -->
             <!-- <property name="jakarta.persistence.schema-generation.database.action" value="create"/> -->
             
+            <!-- SCRIPT TO CREATE AND DROP TABLES -->
+            <property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-script.sql"/>
+            <property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-script.sql"/>
+            
             <!-- DO NOT USE IN PRODUCTION -->
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/seeds.sql"/>
 
