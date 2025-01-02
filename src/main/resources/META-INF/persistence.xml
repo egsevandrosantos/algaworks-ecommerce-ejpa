@@ -38,6 +38,12 @@
             
             <!-- DO NOT USE IN PRODUCTION -->
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/seeds.sql"/>
+            
+            <!-- EXPORT SCRIPTS APPLIED IN DATABASE -->
+            <!-- THE SAME OPTIONS TO jakarta.persistence.schema-generation.database.action -->
+            <property name="jakarta.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="jakarta.persistence.schema-generation.scripts.create-target" value="src/main/resources/META-INF/database/exported-create-script.sql"/>
+            <property name="jakarta.persistence.schema-generation.scripts.drop-target" value="src/main/resources/META-INF/database/exported-drop-script.sql"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 
