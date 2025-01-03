@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -58,7 +59,7 @@ public class Product extends BaseEntityId {
 	private Instant createdAt;
 	@Column(name = "updated_at", insertable = false) // For tests purpose
 	private Instant updatedAt;
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name = "products_categories",
 		// foreignKey = @ForeignKey(name = "fk_category_product"),

@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.cascadeoperations;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.ClientSex;
 import com.algaworks.ecommerce.model.Order;
@@ -98,5 +100,26 @@ public class CasdadeTypePersistTests extends EntityManagerTests {
 		
 		Order actualOrder = entityManager.find(Order.class, order.getId());
 		Assertions.assertTrue(order.fullEquals(actualOrder) && actualOrder.getClient() != null && client.fullEquals(actualOrder.getClient()));
+	}
+	
+	@Test
+	public void testPersistProductWithCategory() {
+		Category category = new Category();
+		category.setName("Cascade");
+	
+		Product product = new Product();
+		product.setName("Cascade");
+		product.setCreatedAt(Instant.now());
+		product.setCategories(List.of(category)); // Save with CascadeType.PERSIST
+		
+		entityManager.getTransaction().begin();
+		// entityManager.persist(category); // Will be persisted with CascadeType.PERSIST
+		entityManager.persist(product);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, product.getId());
+		Assertions.assertTrue(product.fullEquals(actualProduct) && actualProduct.getCategories().size() == 1 && category.fullEquals(actualProduct.getCategories().get(0)));
 	}
 }
