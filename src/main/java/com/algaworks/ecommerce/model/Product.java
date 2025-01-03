@@ -59,7 +59,7 @@ public class Product extends BaseEntityId {
 	private Instant createdAt;
 	@Column(name = "updated_at", insertable = false) // For tests purpose
 	private Instant updatedAt;
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
 		name = "products_categories",
 		// foreignKey = @ForeignKey(name = "fk_category_product"),

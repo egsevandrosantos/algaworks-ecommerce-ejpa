@@ -37,7 +37,7 @@ public class RelationshipManyToOneTests extends EntityManagerTests {
 	
 	@Test
 	public void testRelationshipOrderItemOrder() {
-		Order order = entityManager.find(Order.class, UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
+		Order order = entityManager.find(Order.class, UUID.fromString("5d027af2-a718-46b2-a38d-0ba5daaf4860"));
 		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
 		
 		OrderItem orderItem = new OrderItem();

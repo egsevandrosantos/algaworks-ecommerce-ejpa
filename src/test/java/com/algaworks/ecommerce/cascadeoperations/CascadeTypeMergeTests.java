@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
@@ -83,5 +84,28 @@ public class CascadeTypeMergeTests extends EntityManagerTests {
 			order.equals(actualOrder)
 				&& Objects.equals(order.getStatus(), actualOrder.getStatus())
 		);
+	}
+	
+	@Test
+	public void testMergeProductWithCategory() {
+		Product product = new Product();
+		product.setId(UUID.fromString("73beb2ec-5a28-43db-93a8-0cdd823fc2c6"));
+		product.setName("Joystick");
+		
+		Category category = new Category();
+		category.setId(UUID.fromString("d9e5d6f8-6605-4dcd-a21a-3839407a0a1f"));
+		category.setName("Joysticks");
+		
+		product.setCategories(List.of(category)); // Update with CascadeType.MERGE
+		
+		entityManager.getTransaction().begin();
+		// entityManager.merge(category); // Will be updated with CascadeType.MERGE
+		entityManager.merge(product);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Category actualCategory = entityManager.find(Category.class, category.getId());
+		Assertions.assertTrue(Objects.equals(category.getName(), actualCategory.getName()));
 	}
 }
