@@ -64,7 +64,8 @@ public class Order extends BaseEntityId {
 	private OrderAddress address;
 	// CascadeType.PERSIST = Persist order and persist items
 	// CascadeType.MERGE = Merge order and merge items
-	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE }) /*fetch = FetchType.EAGER*/
+	// CascadeType.REMOVE = Remove order and remove items
+	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }) /*fetch = FetchType.EAGER*/
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private Payment payment;

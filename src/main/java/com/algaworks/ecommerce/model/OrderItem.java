@@ -29,7 +29,7 @@ public class OrderItem {
 	// Don't need CascadeType.PERSIST to persist item and persist order because order is part of PK (@MapsId), so JPA persist automatically
 	// CascadeType.MERGE = Merge order item and merge order
 	@MapsId("orderId")
-	@ManyToOne(optional = false, cascade = CascadeType.MERGE)
+	@ManyToOne(optional = false, cascade = { CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Order order;
 	@MapsId("productId")
