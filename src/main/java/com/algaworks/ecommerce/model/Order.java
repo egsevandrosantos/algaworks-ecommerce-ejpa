@@ -63,7 +63,8 @@ public class Order extends BaseEntityId {
 	@Embedded
 	private OrderAddress address;
 	// CascadeType.PERSIST = Persist order and persist items
-	@OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST) /*fetch = FetchType.EAGER*/
+	// CascadeType.MERGE = Merge order and merge items
+	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE }) /*fetch = FetchType.EAGER*/
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private Payment payment;
@@ -81,7 +82,7 @@ public class Order extends BaseEntityId {
 		Optional.ofNullable(items)
 			.ifPresent(items -> {
 				total = items.stream()
-					.map(OrderItem::getProductPrice)
+					.map(orderItem -> orderItem.getProductPrice().multiply(new BigDecimal(orderItem.getQuantity())))
 					.reduce(BigDecimal.ZERO, BigDecimal::add);
 			});
 	}
