@@ -9,6 +9,7 @@ import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.OrderItemId;
+import com.algaworks.ecommerce.model.Product;
 
 public class CascadeTypeRemoveTests extends EntityManagerTests {
 	@Test
@@ -40,5 +41,21 @@ public class CascadeTypeRemoveTests extends EntityManagerTests {
 		
 		Order actualOrder = entityManager.find(Order.class, orderItem.getId().getOrderId());
 		Assertions.assertNull(actualOrder);
+	}
+	
+	@Test
+	public void testRemoveProductAndCategoryRelationship() {
+		Product product = entityManager.find(Product.class, UUID.fromString("225ef043-f0a4-4c6d-b896-0ebf415dad93"));
+		
+		Assertions.assertFalse(product.getCategories().isEmpty()); // Removed automatically
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(product);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product actualProduct = entityManager.find(Product.class, product.getId());
+		Assertions.assertNull(actualProduct);
 	}
 }

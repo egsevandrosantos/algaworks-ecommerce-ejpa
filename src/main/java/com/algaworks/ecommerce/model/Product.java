@@ -59,6 +59,7 @@ public class Product extends BaseEntityId {
 	private Instant createdAt;
 	@Column(name = "updated_at", insertable = false) // For tests purpose
 	private Instant updatedAt;
+	// ManyToMany we remove relationship Product x Category, not the entity in database, and is removed automatically
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
 		name = "products_categories",
