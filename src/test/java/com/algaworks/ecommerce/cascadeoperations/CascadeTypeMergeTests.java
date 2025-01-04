@@ -50,7 +50,7 @@ public class CascadeTypeMergeTests extends EntityManagerTests {
 		Assertions.assertTrue(order.equals(actualOrder) && actualOrder.getItems().size() == 1 && item.fullEquals(actualOrder.getItems().get(0)));
 	}
 	
-	@Test
+	// @Test // Removed cascade in this relationship
 	public void testMergeOrderItemsWithOrder() {
 		Client client = entityManager.find(Client.class, UUID.fromString("737fac65-ec05-4173-a522-00833a22271b"));
 		Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));

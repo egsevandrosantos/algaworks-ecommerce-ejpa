@@ -27,7 +27,7 @@ public class CascadeTypeRemoveTests extends EntityManagerTests {
 		Assertions.assertNull(actualOrder);
 	}
 	
-	@Test
+	// @Test // Removed cascade in this relationship
 	public void testRemoveOrderItemAndOrder() {
 		OrderItemId orderItemId = new OrderItemId(UUID.fromString("9e1b1c20-6b20-4d96-a6d3-1ae0c0c7dd47"), UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
 		OrderItem orderItem = entityManager.find(OrderItem.class, orderItemId);
@@ -57,5 +57,21 @@ public class CascadeTypeRemoveTests extends EntityManagerTests {
 		
 		Product actualProduct = entityManager.find(Product.class, product.getId());
 		Assertions.assertNull(actualProduct);
+	}
+	
+	@Test
+	public void testOrphanRemovalOrderWithItems() {
+		Order order = entityManager.find(Order.class, UUID.fromString("b5f64582-a54b-4c31-98cc-058f6ab36a76"));
+		
+		Assertions.assertFalse(order.getItems().isEmpty());
+		
+		entityManager.getTransaction().begin();
+		order.getItems().clear();
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Order actualOrder = entityManager.find(Order.class, order.getId());
+		Assertions.assertTrue(actualOrder.getItems().isEmpty());
 	}
 }

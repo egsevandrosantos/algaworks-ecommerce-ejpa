@@ -65,7 +65,9 @@ public class Order extends BaseEntityId {
 	// CascadeType.PERSIST = Persist order and persist items
 	// CascadeType.MERGE = Merge order and merge items
 	// CascadeType.REMOVE = Remove order and remove items
-	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }) /*fetch = FetchType.EAGER*/
+	// @OneToMany and @OneToOne has property orphanRemoval = CascadeType.REMOVE
+	// getItems().clear() not delete with CascadeType.REMOVE but with orphanRemoval (because we don't have a remove command, but object is orphan in memory)
+	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true) /* CascadeType.REMOVE, fetch = FetchType.EAGER */
 	private List<OrderItem> items;
 	@OneToOne(mappedBy = "order")
 	private Payment payment;
