@@ -26,4 +26,27 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
+	
+	@Test
+	public void testIsNullAndIsNotNull() {
+		String jpql = "SELECT p FROM Product p WHERE p.photo IS NULL";
+		// String jpql = "SELECT p FROM Product p WHERE p.photo IS NOT NULL";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testIsEmptyAndIsNotEmpty() {
+		// Is empty is for collection
+		String jpql = "SELECT p FROM Product p WHERE p.categories IS EMPTY"; // WHERE NOT EXISTS
+		// String jpql = "SELECT p FROM Product p WHERE p.categories IS NOT EMPTY"; // WHERE EXISTS
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
 }
