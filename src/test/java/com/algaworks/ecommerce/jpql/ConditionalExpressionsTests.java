@@ -92,4 +92,42 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
+	
+	@Test
+	public void testBetween() {
+		// String jpql = "SELECT p FROM Product p WHERE p.price >= :priceInterval1 AND p.price <= :priceInterval2";
+		// Equals:
+		String jpql = "SELECT p FROM Product p WHERE p.price BETWEEN :priceInterval1 AND :priceInterval2";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		query.setParameter("priceInterval1", new BigDecimal("400.00"));
+		query.setParameter("priceInterval2", new BigDecimal("1500.00"));
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testFindOrders2DaysAgoWithBetween() {
+		Instant dateInterval1 = Instant.now()
+			.atOffset(ZoneOffset.UTC)
+			.minusDays(2)
+			.with(LocalTime.of(0, 0, 0))
+			.toInstant();
+		Instant dateInterval2 = Instant.now()
+			.atOffset(ZoneOffset.UTC)
+			.with(LocalTime.of(23, 59, 59))
+			.toInstant();
+		
+		// String jpql = "SELECT o FROM Order o WHERE o.createdAt >= :dateInterval1 AND o.createdAt <= :dateInterval2";
+		// Equals:
+		String jpql = "SELECT o FROM Order o WHERE o.createdAt BETWEEN :dateInterval1 AND :dateInterval2";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		query.setParameter("dateInterval1", dateInterval1);
+		query.setParameter("dateInterval2", dateInterval2);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
 }
