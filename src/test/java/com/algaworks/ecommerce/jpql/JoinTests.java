@@ -26,4 +26,19 @@ public class JoinTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
+	
+	@Test
+	public void testLeftJoin() {
+		// LEFT JOIN = LEFT OUTER JOIN
+		// String jpql = "SELECT o FROM Order o LEFT JOIN o.payment p"; // LEFT JOIN is ignored because 'p' is ignored
+		// String jpql = "SELECT p FROM Payment p LEFT JOIN p.order o"; // LEFT JOIN is ignored because 'o' is ignored
+		// String jpql = "SELECT o, p FROM Order o LEFT JOIN o.payment p"; // LEFT JOIN in final query
+		// String jpql = "SELECT o FROM Order o LEFT JOIN o.payment p ON p.status = 'PROCESSING'";
+		// Is different (because ON is executed and after that execute LEFT JOIN / because LEFT JOIN is executed and after that execute WHERE):
+		String jpql = "SELECT o FROM Order o LEFT JOIN o.payment p WHERE p.status = 'PROCESSING'";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
 }
