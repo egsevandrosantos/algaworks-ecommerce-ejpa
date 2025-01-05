@@ -10,7 +10,6 @@ import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
-import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
