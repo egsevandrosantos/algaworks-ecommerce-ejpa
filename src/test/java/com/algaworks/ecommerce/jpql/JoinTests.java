@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.jpql;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,6 +51,16 @@ public class JoinTests extends EntityManagerTests {
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		// query.setParameter("id", UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
 		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testPathExpressions() {
+		// String jpql = "SELECT o FROM Order o INNER JOIN o.client c WHERE c.name = 'João da Silva'";
+		String jpql = "SELECT o FROM Order o WHERE o.client.name = 'João da Silva'"; // o.client.name = PATH EXPRESSION
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
