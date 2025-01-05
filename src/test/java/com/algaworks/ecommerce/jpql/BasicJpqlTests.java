@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -61,5 +62,17 @@ public class BasicJpqlTests extends EntityManagerTests {
 		TypedQuery<Client> queryOrdersClients = entityManager.createQuery("SELECT o.client FROM Order o", Client.class);
 		List<Client> ordersClients = queryOrdersClients.getResultList();
 		Assertions.assertTrue(Client.class.equals(ordersClients.get(0).getClass()));
+	}
+	
+	@Test
+	public void testProjection() {
+		// String jpql = "SELECT p.id, p.name FROM Product p";
+		// Equals
+		String jpql = "SELECT id, name FROM Product";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		List<Object[]> result = query.getResultList();
+		
+		Assertions.assertTrue(result.get(0).length == 2 && UUID.class.equals(result.get(0)[0].getClass()) && String.class.equals(result.get(0)[1].getClass()));
 	}
 }
