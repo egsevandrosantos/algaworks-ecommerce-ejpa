@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.jpql;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -45,6 +46,23 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		// String jpql = "SELECT p FROM Product p WHERE p.categories IS NOT EMPTY"; // WHERE EXISTS
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testGreaterThanEqualAndLessThanEqual() {
+		// String jpql = "SELECT p FROM Product p WHERE p.price > :price";
+		// String jpql = "SELECT p FROM Product p WHERE p.price >= :price";
+		// String jpql = "SELECT p FROM Product p WHERE p.price < :price";
+		// String jpql = "SELECT p FROM Product p WHERE p.price <= :price";
+		String jpql = "SELECT p FROM Product p WHERE p.price >= :priceInterval1 AND p.price <= :priceInterval2";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		// query.setParameter("price", new BigDecimal("499.00"));
+		query.setParameter("priceInterval1", new BigDecimal("400.00"));
+		query.setParameter("priceInterval2", new BigDecimal("1500.00"));
 		
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
