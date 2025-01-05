@@ -1,6 +1,9 @@
 package com.algaworks.ecommerce.jpql;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -63,6 +66,28 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		// query.setParameter("price", new BigDecimal("499.00"));
 		query.setParameter("priceInterval1", new BigDecimal("400.00"));
 		query.setParameter("priceInterval2", new BigDecimal("1500.00"));
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testFindOrders2DaysAgo() {
+		Instant dateInterval1 = Instant.now()
+			.atOffset(ZoneOffset.UTC)
+			.minusDays(2)
+			.with(LocalTime.of(0, 0, 0))
+			.toInstant();
+		Instant dateInterval2 = Instant.now()
+			.atOffset(ZoneOffset.UTC)
+			.with(LocalTime.of(23, 59, 59))
+			.toInstant();
+		
+		String jpql = "SELECT o FROM Order o WHERE o.createdAt >= :dateInterval1 AND o.createdAt <= :dateInterval2";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		query.setParameter("dateInterval1", dateInterval1);
+		query.setParameter("dateInterval2", dateInterval2);
 		
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
