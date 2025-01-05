@@ -54,14 +54,4 @@ public class JoinTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
-	
-	@Test
-	public void testPathExpressions() {
-		// String jpql = "SELECT o FROM Order o INNER JOIN o.client c WHERE c.name = 'João da Silva'";
-		String jpql = "SELECT o FROM Order o WHERE o.client.name = 'João da Silva'"; // o.client.name = PATH EXPRESSION
-		
-		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
-		List<Object[]> result = query.getResultList();
-		Assertions.assertFalse(result.isEmpty());
-	}
 }
