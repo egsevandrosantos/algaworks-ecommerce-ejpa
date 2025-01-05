@@ -130,4 +130,13 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
+	
+	@Test
+	public void testDifferentOperator() {
+		String jpql = "SELECT p FROM Product p WHERE p.price <> 100";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
 }
