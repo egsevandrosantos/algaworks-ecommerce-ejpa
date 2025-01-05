@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.jpql;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,19 @@ public class JoinTests extends EntityManagerTests {
 		String jpql = "SELECT o FROM Order o LEFT JOIN o.payment p WHERE p.status = 'PROCESSING'";
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testJoinFetch() {
+		// String jpql = "SELECT o FROM Order o JOIN FETCH o.items WHERE o.id = :id";
+		// String jpql = "SELECT o FROM Order o"; // N+1 problem
+		String jpql = "SELECT o FROM Order o JOIN FETCH o.payment JOIN FETCH o.client LEFT JOIN FETCH o.invoice"; // Without N+1
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		// query.setParameter("id", UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"));
+		
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
 	}
