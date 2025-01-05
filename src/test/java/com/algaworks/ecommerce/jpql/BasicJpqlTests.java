@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Product;
@@ -74,5 +75,15 @@ public class BasicJpqlTests extends EntityManagerTests {
 		List<Object[]> result = query.getResultList();
 		
 		Assertions.assertTrue(result.get(0).length == 2 && UUID.class.equals(result.get(0)[0].getClass()) && String.class.equals(result.get(0)[1].getClass()));
+	}
+	
+	@Test
+	public void testProjectionWithDTO() {
+		String jpql = "SELECT new ProductDTO(id, name) FROM Product";
+		
+		TypedQuery<ProductDTO> queryProducts = entityManager.createQuery(jpql, ProductDTO.class);
+		List<ProductDTO> products = queryProducts.getResultList();
+		
+		Assertions.assertTrue(UUID.class.equals(products.get(0).getId().getClass()) && String.class.equals(products.get(0).getName().getClass()));
 	}
 }
