@@ -35,3 +35,5 @@ INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLAC
 -- INSERT INTO card_payments (order_id, card_number) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), '1234 5678 9012 3456');
 
 INSERT INTO products_categories (product_id, category_id) VALUES (UNHEX(REPLACE('225ef043-f0a4-4c6d-b896-0ebf415dad93', '-', '')), UNHEX(REPLACE('65a38317-8d2b-43a9-ba84-0f6610bdc128', '-', '')));
+
+INSERT INTO invoices (order_id, xml, emission_date) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), '<xml />', '2024-12-27 19:07:35.624173');

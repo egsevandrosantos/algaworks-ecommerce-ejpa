@@ -37,6 +37,7 @@ public class Invoice extends BaseEntityId {
 	@Lob
 	@Column(columnDefinition = "LONGBLOB NOT NULL")
 	private byte[] xml;
+	// If use Date type, use TemporalType.TIMESTAMP
 	@Column(name = "emission_date", nullable = false)
 	private Instant emissionDate;
 	
