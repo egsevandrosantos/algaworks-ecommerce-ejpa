@@ -1,11 +1,13 @@
 package com.algaworks.ecommerce.jpql;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 
 import jakarta.persistence.Query;
@@ -48,5 +50,16 @@ public class BasicJpqlTests extends EntityManagerTests {
 		
 		// orders = (List<Order>) query.getResultList(); // @SuppressWarnings("unchecked")
 		// Assertions.assertFalse(orders.isEmpty());
+	}
+	
+	@Test
+	public void testSelectOneFieldToResult() {
+		TypedQuery<String> queryProductsName = entityManager.createQuery("SELECT p.name FROM Product p", String.class);
+		List<String> productsName = queryProductsName.getResultList();
+		Assertions.assertTrue(String.class.equals(productsName.get(0).getClass()));
+		
+		TypedQuery<Client> queryOrdersClients = entityManager.createQuery("SELECT o.client FROM Order o", Client.class);
+		List<Client> ordersClients = queryOrdersClients.getResultList();
+		Assertions.assertTrue(Client.class.equals(ordersClients.get(0).getClass()));
 	}
 }
