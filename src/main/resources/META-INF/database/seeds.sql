@@ -20,8 +20,15 @@ INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('9e1b1c20-6b20-4d96-a6d3-1ae0c0c7dd47', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
 
-INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('d9e5d6f8-6605-4dcd-a21a-3839407a0a1f', '-', '')), 'Eletronicos');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('d9e5d6f8-6605-4dcd-a21a-3839407a0a1f', '-', '')), 'Electronics');
 INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('65a38317-8d2b-43a9-ba84-0f6610bdc128', '-', '')), 'Videogames');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('26ea828c-45b6-44e7-9c89-e76732123052', '-', '')), 'Books');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('c76ab57b-092d-414b-87d3-eaee61eea23c', '-', '')), 'Sports');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('a7241e73-6969-4799-ae21-48c93fac25f4', '-', '')), 'E-Sports');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('87744af7-5198-41e7-9e33-59e15863964c', '-', '')), 'Soccer');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('77bcff79-5b4e-45e4-81e6-408850aa818e', '-', '')), 'Swimming');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('362df1eb-8707-4cc0-99b3-aea50c6747d7', '-', '')), 'Notebooks');
+INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('9e0371a4-0c0c-4ee0-9e64-7497e72190af', '-', '')), 'Smartphones');
 
 /* INHERITANCE WITH SINGLE_TABLE */
 INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), 'PROCESSING', '1234 5678 9012 3456', 'CardPayment');
