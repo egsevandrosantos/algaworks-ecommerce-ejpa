@@ -85,4 +85,17 @@ public class BasicJpqlTests extends EntityManagerTests {
 		
 		Assertions.assertTrue(UUID.class.equals(products.get(0).getId().getClass()) && String.class.equals(products.get(0).getName().getClass()));
 	}
+	
+	@Test
+	public void testOrdering() {
+		// String jpql = "SELECT c FROM Client c ORDER BY c.name"; // Default is ASC
+		// String jpql = "SELECT c FROM Client c ORDER BY c.id"; // Default is ASC
+		// String jpql = "SELECT c FROM Client c ORDER BY c.name ASC"; // Default is ASC
+		String jpql = "SELECT c FROM Client c ORDER BY c.name DESC";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+	}
 }
