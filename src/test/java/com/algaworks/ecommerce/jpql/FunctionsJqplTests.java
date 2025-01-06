@@ -9,9 +9,9 @@ import com.algaworks.ecommerce.EntityManagerTests;
 
 import jakarta.persistence.TypedQuery;
 
-public class StringFunctionsJqplTests extends EntityManagerTests {
+public class FunctionsJqplTests extends EntityManagerTests {
 	@Test
-	public void testFunctions() {
+	public void testFunctionsString() {
 		// concat, length, locate, substring, lower, upper, trim
 		// String jpql = "SELECT c.name, CONCAT('Category: ', c.name, '.') FROM Category c";
 		// String jpql = "SELECT c.name, LENGTH(c.name) FROM Category c";
@@ -29,5 +29,23 @@ public class StringFunctionsJqplTests extends EntityManagerTests {
 		Assertions.assertFalse(result.isEmpty());
 		
 		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1]));
+	}
+	
+	@Test
+	public void testFunctionsDate() {
+		// TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
+		// String jpql = "SELECT current_date, current_time, current_timestamp FROM Order o"; // Date, Time, Date/Time with converted timezone
+		// String jpql = "SELECT current_date, current_time, current_timestamp FROM Order o WHERE o.createdAt > current_date";
+		// String jpql = "SELECT YEAR(current_timestamp), MONTH(current_timestamp), DAY(current_timestamp) FROM Order o";
+		// String jpql = "SELECT YEAR(o.createdAt), MONTH(o.createdAt), DAY(o.createdAt) FROM Order o";
+		String jpql = "SELECT HOUR(o.createdAt), MINUTE(o.createdAt), SECOND(o.createdAt) FROM Order o WHERE HOUR(o.createdAt) > 18";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1] + "  -->  " + r[2]));
 	}
 }
