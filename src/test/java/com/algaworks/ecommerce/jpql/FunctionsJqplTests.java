@@ -48,4 +48,19 @@ public class FunctionsJqplTests extends EntityManagerTests {
 		
 		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1] + "  -->  " + r[2]));
 	}
+	
+	@Test
+	public void testFunctionsNumber() {
+		// String jpql = "SELECT ABS(-10), ABS(10), ABS(10.9) FROM Order o"; // Get only number (absolute) -> 10, 10, 10.9
+		// String jpql = "SELECT ABS(-10), MOD(3, 2), SQRT(9) FROM Order o"; // Absolute, mod (rest of division), square root (9) = 3
+		// String jpql = "SELECT ABS(o.total), MOD(o.total, 2), SQRT(o.total) FROM Order o"; // Wrong: mod() has type 'INTEGER', but argument is of type 'BigDecimal'
+		String jpql = "SELECT ABS(o.total), MOD(3, 2), SQRT(o.total) FROM Order o WHERE ABS(o.total) > 0.01";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1] + "  -->  " + r[2]));
+	}
 }
