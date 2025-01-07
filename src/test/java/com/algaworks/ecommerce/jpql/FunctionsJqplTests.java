@@ -75,4 +75,18 @@ public class FunctionsJqplTests extends EntityManagerTests {
 		
 		result.forEach(r -> System.out.println(r[0]));
 	}
+	
+	@Test
+	public void testNativeFunctions() {
+		// FUNCTION 'dayname' is from MySQL
+		// FUNCTION 'greather_than_average_billing' is mine
+		String jpql = "SELECT FUNCTION('dayname', o.createdAt) FROM Order o WHERE FUNCTION('greather_than_average_billing', o.total) = 1"; // FUNCTION(name, ...params) = 1 ? true : false
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(r -> System.out.println(r[0]));
+	}
 }
