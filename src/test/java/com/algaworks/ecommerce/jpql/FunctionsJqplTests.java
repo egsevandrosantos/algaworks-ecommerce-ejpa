@@ -63,4 +63,16 @@ public class FunctionsJqplTests extends EntityManagerTests {
 		
 		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1] + "  -->  " + r[2]));
 	}
+	
+	@Test
+	public void testFunctionsCollection() {
+		String jpql = "SELECT SIZE(o.items) FROM Order o WHERE SIZE(o.items) >= 1";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(r -> System.out.println(r[0]));
+	}
 }
