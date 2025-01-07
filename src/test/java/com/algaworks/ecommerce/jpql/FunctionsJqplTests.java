@@ -89,4 +89,21 @@ public class FunctionsJqplTests extends EntityManagerTests {
 		
 		result.forEach(r -> System.out.println(r[0]));
 	}
+	
+	@Test
+	public void testAggregationFunctions() {
+		// AVG, COUNT, MIN, MAX, SUM
+		// String jpql = "SELECT AVG(o.total) FROM Order o";
+		// String jpql = "SELECT COUNT(1) FROM Order o WHERE o.createdAt >= current_date";
+		// String jpql = "SELECT MIN(o.total) FROM Order o";
+		// String jpql = "SELECT MAX(o.total) FROM Order o";
+		String jpql = "SELECT SUM(o.total) FROM Order o";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(r -> System.out.println(r[0]));
+	}
 }
