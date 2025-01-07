@@ -147,4 +147,52 @@ public class GroupByTests extends EntityManagerTests {
 		
 		result.forEach(r -> System.out.println(r[0] + "  -->  " + r[1]));
 	}
+	
+	@Test
+	public void testGroupByWithHaving() {
+		// Having only accept aggregate functions and properties in group by
+		// Total sales by category with (having) most sales (greater than 10 in sales):
+		/*String jpql = """
+			SELECT
+				c.name,
+				SUM(i.productPrice * i.quantity)
+			FROM OrderItem i
+				JOIN i.product p
+				JOIN p.categories c
+			GROUP BY c.id
+			HAVING SUM(i.productPrice * i.quantity) > 10
+			ORDER BY c.name
+		""";*/
+		/*String jpql = """
+			SELECT
+				c.name,
+				SUM(i.productPrice * i.quantity),
+				AVG(i.productPrice * i.quantity)
+			FROM OrderItem i
+				JOIN i.product p
+				JOIN p.categories c
+			GROUP BY c.id
+			HAVING AVG(i.productPrice * i.quantity) > 10
+			ORDER BY c.name
+		""";*/
+		String jpql = """
+			SELECT
+				c.name,
+				SUM(i.productPrice * i.quantity),
+				COUNT(c.id)
+			FROM OrderItem i
+				JOIN i.product p
+				JOIN p.categories c
+			GROUP BY c.id
+			HAVING COUNT(c.id) > 1
+			ORDER BY c.name
+		""";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
