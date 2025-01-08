@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.jpql;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -94,6 +95,27 @@ public class SubQueriesTests extends EntityManagerTests {
 		""";
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
+	
+	@Test
+	public void testFindOrderWithProductSpecificCategoryWithIn() {
+		String jpql = """
+			SELECT o.total, c.name
+			FROM Order o
+			JOIN o.client c
+			JOIN o.items i
+			JOIN i.product p
+			JOIN p.categories cat
+			WHERE cat IN (:secondCategory)
+		""";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		query.setParameter("secondCategory", List.of(UUID.fromString("26ea828c-45b6-44e7-9c89-e76732123052")));
 		
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
