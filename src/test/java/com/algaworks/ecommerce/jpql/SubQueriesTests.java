@@ -122,4 +122,21 @@ public class SubQueriesTests extends EntityManagerTests {
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+	
+	@Test
+	public void testClientsWith2OrMoreOrders() {
+		// String jpql = "SELECT COUNT(1), c.name FROM Client c JOIN c.orders GROUP BY c.id";
+		String jpql = """
+			SELECT c.name
+			FROM Client c
+			WHERE (SELECT COUNT(1) FROM c.orders) >= 2
+		""";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
