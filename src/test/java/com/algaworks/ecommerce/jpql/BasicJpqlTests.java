@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.jpql;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,5 +98,19 @@ public class BasicJpqlTests extends EntityManagerTests {
 		
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testDistinct() {
+		// DISTINCT is for all columns
+		// String jpql = "SELECT DISTINCT o.total, o.status FROM Order o JOIN o.items i";
+		String jpql = "SELECT DISTINCT o.status, o.total FROM Order o JOIN o.items i";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
 }
