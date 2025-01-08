@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.OrderStatus;
 
 import jakarta.persistence.TypedQuery;
 
@@ -138,5 +140,34 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		List<Object[]> result = query.getResultList();
 		Assertions.assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	public void testCase() {
+		String jpql = """
+			SELECT
+				o.id,
+				CASE o.status
+					WHEN 'PAID' THEN 'Already paid'
+					WHEN 'CANCELLED' THEN 'Already cancelled'
+					WHEN :waitingStatus THEN 'Please, wait a minute...'
+					ELSE 'Undefined'
+				END,
+				CASE TYPE(o.payment)
+					WHEN BankSlipPayment THEN 'Bank slip'
+					WHEN CardPayment THEN 'Card'
+					ELSE 'Undefined'
+				END
+			FROM Order o
+		""";
+		// BankSlipPayment and CardPayment in jpql is class, not string
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		query.setParameter("waitingStatus", OrderStatus.WAITING);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
 }
