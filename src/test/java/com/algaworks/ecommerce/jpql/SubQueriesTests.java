@@ -49,4 +49,33 @@ public class SubQueriesTests extends EntityManagerTests {
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+	
+	@Test
+	public void testSubqueryWithIn() {
+		/*String jpql = """
+			SELECT DISTINCT o.id
+			FROM Order o
+			JOIN o.items i
+			JOIN i.product p
+			WHERE p.price > 100
+		""";*/
+		String jpql = """
+			SELECT o.id
+			FROM Order o
+			WHERE o.id IN (
+				SELECT o1.id
+				FROM Order o1
+				JOIN o1.items i1
+				JOIN i1.product p1
+				WHERE p1.price > 100
+			)
+		""";
+			
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
