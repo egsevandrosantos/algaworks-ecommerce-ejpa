@@ -78,4 +78,26 @@ public class SubQueriesTests extends EntityManagerTests {
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+	
+	@Test
+	public void testSubQueryWithExists() {
+		// EXISTS / NOT EXISTS
+		String jpql = """
+			SELECT p.name
+			FROM Product p
+			WHERE EXISTS(
+				SELECT 1
+				FROM OrderItem oi1
+				JOIN oi1.product p1
+				WHERE p1 = p
+			)
+		""";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
