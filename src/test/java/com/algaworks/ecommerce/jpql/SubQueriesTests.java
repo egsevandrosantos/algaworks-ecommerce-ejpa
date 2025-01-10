@@ -160,4 +160,56 @@ public class SubQueriesTests extends EntityManagerTests {
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+	
+	@Test
+	public void testSubQueryWithAll() {
+		// All products sold with actual price
+		// String jpql = "SELECT p.name, p.price, oi.productPrice FROM OrderItem oi JOIN oi.product p";
+		/*String jpql = """
+			SELECT p.name, p.price
+			FROM Product p
+			WHERE
+				EXISTS (
+					SELECT 1
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+				AND p.price = ALL (
+					SELECT oi1.productPrice
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+		""";*/
+		
+		// Products already sold but not sold when price is greater than past price
+		/*String jpql = """
+			SELECT p.name, p.price
+			FROM Product p
+			WHERE
+				EXISTS (
+					SELECT 1
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+				AND p.price > ALL (SELECT oi1.productPrice FROM OrderItem oi1 WHERE oi1.product = p)
+		""";*/
+		String jpql = """
+			SELECT p.name, p.price
+			FROM Product p
+			WHERE
+				EXISTS (
+					SELECT 1
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+				AND p.price > (SELECT MAX(oi1.productPrice) FROM OrderItem oi1 WHERE oi1.product = p)
+		""";
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
