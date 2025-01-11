@@ -12,7 +12,7 @@ INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPL
 INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', DATE_SUB(SYSDATE(), INTERVAL 3 DAY), 'WAITING');
 INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPLACE('5d027af2-a718-46b2-a38d-0ba5daaf4860', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', DATE_SUB(SYSDATE(), INTERVAL 2 DAY), 'WAITING');
 INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPLACE('9e1b1c20-6b20-4d96-a6d3-1ae0c0c7dd47', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', DATE_SUB(SYSDATE(), INTERVAL 1 DAY), 'WAITING');
-INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '10.00', SYSDATE(), 'WAITING');
+INSERT INTO orders (id, client_id, total, created_at, status) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), '30.00', SYSDATE(), 'WAITING');
 
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('07e419cc-f461-42c6-8055-fca267c407ef', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 2);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
@@ -20,6 +20,7 @@ INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), UNHEX(REPLACE('4e3a1229-050e-4049-9a85-54885aa5e875', '-', '')), '200.00', 1);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('9e1b1c20-6b20-4d96-a6d3-1ae0c0c7dd47', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
+INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), UNHEX(REPLACE('77c31aa8-14f5-4df1-9a96-fa03d6882f4f', '-', '')), '20.00', 1);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
 INSERT INTO order_items (order_id, product_id, product_price, quantity) VALUES (UNHEX(REPLACE('5d027af2-a718-46b2-a38d-0ba5daaf4860', '-', '')), UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), '10.00', 1);
 
