@@ -212,4 +212,51 @@ public class SubQueriesTests extends EntityManagerTests {
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+	
+	@Test
+	public void testSubQueryWithAny() {
+		// All products sold with any times with actual price
+		// String jpql = "SELECT p.name, p.price, oi.productPrice FROM OrderItem oi JOIN oi.product p";
+		/*String jpql = """
+			SELECT p.name, p.price
+			FROM Product p
+			WHERE
+				EXISTS (
+					SELECT 1
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+				AND p.price = ANY (
+					SELECT oi1.productPrice
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+		""";*/
+		
+		// All products sold any times with different price
+		// String jpql = "SELECT p.name, p.price, oi.productPrice FROM OrderItem oi JOIN oi.product p";
+		String jpql = """
+			SELECT p.name, p.price
+			FROM Product p
+			WHERE
+				EXISTS (
+					SELECT 1
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+				AND p.price <> ANY (
+					SELECT oi1.productPrice
+					FROM OrderItem oi1
+					WHERE oi1.product = p
+				)
+		""";
+		// ANY = SOME
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+		
+		List<Object[]> result = query.getResultList();
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
