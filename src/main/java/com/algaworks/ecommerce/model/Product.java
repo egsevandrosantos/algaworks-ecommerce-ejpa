@@ -16,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -26,6 +28,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@NamedQueries({	
+	@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+	@NamedQuery(name = "Product.findByCategory", query = "SELECT p FROM Product p WHERE EXISTS (SELECT 1 FROM p.categories c1 WHERE c1.id = :categoryId)")
+})
 @Entity
 @Table(
 	name = "products",
