@@ -6,12 +6,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Product;
+
+import jakarta.persistence.Query;
 
 public class BatchOperationsTests extends EntityManagerTests {
 	private final int LIMIT_TO_INSERT = 4;
@@ -50,5 +54,21 @@ public class BatchOperationsTests extends EntityManagerTests {
 			
 			entityManager.getTransaction().commit();
 		}
+	}
+	
+	@Test
+	public void testBatchUpdateOperation() {
+		// String jpql = "UPDATE Product p SET p.price = p.price + 1";
+		String jpql = "UPDATE Product p SET p.price = p.price + (p.price * :tenPercent) WHERE EXISTS (SELECT 1 FROM p.categories c1 WHERE c1.id = :categoryId)";
+		
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("tenPercent", 10 / 100);
+		query.setParameter("categoryId", UUID.fromString("65a38317-8d2b-43a9-ba84-0f6610bdc128"));
+		
+		entityManager.getTransaction().begin();
+		int numbersAffected = query.executeUpdate();
+		entityManager.getTransaction().commit();
+		
+		Assertions.assertTrue(numbersAffected != 0);
 	}
 }
