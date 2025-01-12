@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,20 @@ public class BatchOperationsTests extends EntityManagerTests {
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("tenPercent", 10 / 100);
 		query.setParameter("categoryId", UUID.fromString("65a38317-8d2b-43a9-ba84-0f6610bdc128"));
+		
+		entityManager.getTransaction().begin();
+		int numbersAffected = query.executeUpdate();
+		entityManager.getTransaction().commit();
+		
+		Assertions.assertTrue(numbersAffected != 0);
+	}
+	
+	@Test
+	public void testBatchDeleteOperation() {
+		String jpql = "DELETE FROM Product p WHERE p.id IN (:ids)";
+		
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("ids", List.of(UUID.fromString("849c840b-63fa-44b8-9883-47d9940adf8b")));
 		
 		entityManager.getTransaction().begin();
 		int numbersAffected = query.executeUpdate();
