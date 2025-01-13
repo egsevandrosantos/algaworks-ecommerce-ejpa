@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -48,5 +49,22 @@ public class BasicCriteriaTests extends EntityManagerTests {
 		List<Client> clients = query.getResultList();
 		
 		Assertions.assertFalse(clients.isEmpty());
+	}
+	
+	@Test
+	public void testFindAllProducts() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		TypedQuery<Product> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Product> products = query.getResultList();
+		
+		Assertions.assertFalse(products.isEmpty());
+		
+		products.stream().map(p -> String.join("  -->  ", List.of(p.getId().toString(), p.getName()))).forEach(System.out::println);
 	}
 }
