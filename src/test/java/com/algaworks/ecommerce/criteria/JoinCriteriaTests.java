@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.criteria;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -88,5 +89,30 @@ public class JoinCriteriaTests extends EntityManagerTests {
 		Assertions.assertFalse(result.isEmpty());
 		
 		System.out.println(result.size());
+	}
+	
+	@Test
+	public void testJoinFetch() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		root.fetch("items") // INNER JOIN FETCH order.items
+			.fetch("product"); // INNER JOIN FETCH order.items.product
+		root.fetch("client"); // INNER JOIN FETCH order.client
+		// @SuppressWarnings("unchecked") Join<Order, Client> clientJoin = (Join<Order, Client>) root.<Order, Client>fetch("client");
+		root.fetch("invoice", JoinType.LEFT); // LEFT JOIN FETCH order.invoice
+		
+		// criteriaQuery.select(clientJoin);
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37")));
+		
+		TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
+		
+		Order order = query.getSingleResult();
+		
+		Assertions.assertFalse(order.getItems().isEmpty());
+		
+		System.out.println(order.getItems().size());
 	}
 }
