@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.criteria;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,5 +67,23 @@ public class BasicCriteriaTests extends EntityManagerTests {
 		Assertions.assertFalse(products.isEmpty());
 		
 		products.stream().map(p -> String.join("  -->  ", List.of(p.getId().toString(), p.getName()))).forEach(System.out::println);
+	}
+	
+	@Test
+	public void testProjections() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		// criteriaQuery.select(root);
+		criteriaQuery.multiselect(root.get("id"), root.get("name"));
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Object[]> result = query.getResultList();
+		
+		Assertions.assertFalse(result.isEmpty());
+		
+		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
 }
