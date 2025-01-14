@@ -17,6 +17,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
 public class JoinCriteriaTests extends EntityManagerTests {
@@ -54,6 +55,31 @@ public class JoinCriteriaTests extends EntityManagerTests {
 		criteriaQuery.multiselect(root);
 		
 		criteriaQuery.where(criteriaBuilder.equal(paymentJoin.get("status"), PaymentStatus.PROCESSING));
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Object[]> result = query.getResultList();
+		
+		Assertions.assertFalse(result.isEmpty());
+		
+		System.out.println(result.size());
+	}
+	
+	@Test
+	public void testLeftJoin() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		Join<Order, Payment> paymentJoin = root.join("payment", JoinType.LEFT); // LEFT JOIN order.payment
+		
+		criteriaQuery.multiselect(root);
+		
+		criteriaQuery.where(
+			criteriaBuilder.or(
+				criteriaBuilder.isNull(paymentJoin),
+				criteriaBuilder.equal(paymentJoin.get("status"), PaymentStatus.PROCESSING)
+			)
+		);
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
 		
