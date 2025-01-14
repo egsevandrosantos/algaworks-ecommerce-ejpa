@@ -12,6 +12,7 @@ import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Product;
 
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -85,5 +86,31 @@ public class BasicCriteriaTests extends EntityManagerTests {
 		Assertions.assertFalse(result.isEmpty());
 		
 		result.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
+	
+	@Test
+	public void testTuple() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createTupleQuery();
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(
+			criteriaBuilder.tuple(
+				root.get("id").alias("id"),
+				root.get("name").alias("name")
+			)
+		);
+		
+		TypedQuery<Tuple> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Tuple> result = query.getResultList();
+		
+		Assertions.assertFalse(result.isEmpty());
+		
+		// result.forEach(tuple -> System.out.println(String.join("  -->  ", IntStream.range(0, tuple.getElements().size()).mapToObj(i -> tuple.get(i).toString()).toList())));
+		for (Tuple tuple : result) {
+			System.out.println(tuple.get(0) + "  -->  " + tuple.get(1));
+			System.out.println(tuple.get("id") + "  -->  " + tuple.get("name"));
+		}
 	}
 }
