@@ -115,4 +115,26 @@ public class JoinCriteriaTests extends EntityManagerTests {
 		
 		System.out.println(order.getItems().size());
 	}
+	
+	@Test
+	public void testFindOrdersWithProductId() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		Join<Order, OrderItem> orderOrderItemJoin = root.join("items");
+		Join<OrderItem, Product> orderItemProductJoin = orderOrderItemJoin.join("product");
+		
+		criteriaQuery.where(criteriaBuilder.equal(orderItemProductJoin.get("id"), UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a")));
+		
+		TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Order> orders = query.getResultList();
+		
+		Assertions.assertFalse(orders.isEmpty());
+		
+		System.out.println(orders.size());
+	}
 }
