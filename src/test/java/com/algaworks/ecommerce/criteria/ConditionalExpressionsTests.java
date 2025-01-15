@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.criteria;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -71,5 +72,32 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		List<Product> products = query.getResultList();
 		
 		Assertions.assertFalse(products.isEmpty());
+	}
+	
+	@Test
+	public void testGreaterThanEqualLessThan() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		// criteriaQuery.where(criteriaBuilder.greaterThan(root.get(Product_.price), new BigDecimal("499.00")));
+		// criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(root.get(Product_.price), new BigDecimal("499.00")));
+		// criteriaQuery.where(criteriaBuilder.lessThan(root.get(Product_.price), new BigDecimal("499.00")));
+		// criteriaQuery.where(criteriaBuilder.lessThanOrEqualTo(root.get(Product_.price), new BigDecimal("499.00")));
+		criteriaQuery.where(
+			criteriaBuilder.greaterThanOrEqualTo(root.get(Product_.price), new BigDecimal("499.00")),
+			/* AND */ criteriaBuilder.lessThanOrEqualTo(root.get(Product_.price), new BigDecimal("1400.00"))
+		);
+		// criteriaQuery.where(criteriaBuilder.between(root.get(Product_.price), new BigDecimal("499.00"), new BigDecimal("1400.00")));
+		
+		TypedQuery<Product> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Product> products = query.getResultList();
+		
+		Assertions.assertFalse(products.isEmpty());
+		
+		System.out.println(products.size());
 	}
 }
