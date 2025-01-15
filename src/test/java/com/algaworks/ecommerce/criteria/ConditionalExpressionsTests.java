@@ -1,6 +1,8 @@
 package com.algaworks.ecommerce.criteria;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.Client;
 import com.algaworks.ecommerce.model.Client_;
+import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Order_;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.Product_;
 
@@ -99,5 +103,30 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		Assertions.assertFalse(products.isEmpty());
 		
 		System.out.println(products.size());
+	}
+	
+	@Test
+	public void testFindOrdersLast3Days() {
+		Instant last3Days = Instant.now()
+			.atOffset(ZoneOffset.UTC)
+			.minusDays(3)
+			// .with(LocalTime.of(0, 0, 0))
+			.toInstant();
+		
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(root.get(Order_.createdAt), last3Days));
+		
+		TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Order> orders = query.getResultList();
+		
+		Assertions.assertFalse(orders.isEmpty());
+		
+		System.out.println(orders.size());
 	}
 }
