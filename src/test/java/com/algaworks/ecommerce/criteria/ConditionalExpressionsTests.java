@@ -157,4 +157,23 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		
 		System.out.println(orders.size());
 	}
+	
+	@Test
+	public void testDifferent() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(criteriaBuilder.notEqual(root.get(Order_.total), new BigDecimal("10.00")));
+		
+		TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Order> orders = query.getResultList();
+		
+		Assertions.assertFalse(orders.isEmpty());
+		
+		System.out.println(orders.size());
+	}
 }
