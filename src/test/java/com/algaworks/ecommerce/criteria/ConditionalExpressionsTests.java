@@ -129,4 +129,32 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		
 		System.out.println(orders.size());
 	}
+	
+	@Test
+	public void testBetween() {
+		Instant now = Instant.now();
+		Instant last5Days = now
+			.atOffset(ZoneOffset.UTC)
+			.minusDays(5)
+			.toInstant();
+		
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(
+			criteriaBuilder.between(root.get(Order_.total), new BigDecimal("20.00"), new BigDecimal("30.00")),
+			criteriaBuilder.between(root.get(Order_.createdAt), last5Days, now)
+		);
+		
+		TypedQuery<Order> query = entityManager.createQuery(criteriaQuery);
+		
+		List<Order> orders = query.getResultList();
+		
+		Assertions.assertFalse(orders.isEmpty());
+		
+		System.out.println(orders.size());
+	}
 }
