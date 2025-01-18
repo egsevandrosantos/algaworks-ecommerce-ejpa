@@ -98,4 +98,27 @@ public class FunctionsTests extends EntityManagerTests {
 		Assertions.assertFalse(items.isEmpty());
 		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+
+	@Test
+	public void testCollectionFunctions() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+
+		criteriaQuery.multiselect(
+			root.get(Order_.id),
+			criteriaBuilder.size(root.get(Order_.items))
+		);
+
+		criteriaQuery.where(
+			criteriaBuilder.greaterThan(
+				criteriaBuilder.size(root.get(Order_.items)), 1
+			)
+		);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
