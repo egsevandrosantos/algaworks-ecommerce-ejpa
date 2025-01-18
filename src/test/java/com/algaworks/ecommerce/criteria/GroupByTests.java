@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.criteria;
 
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.model.*;
+import com.algaworks.ecommerce.model.Order;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.Assertions;
@@ -45,6 +46,26 @@ public class GroupByTests extends EntityManagerTests {
         );
 
         criteriaQuery.groupBy(categoryJoin.get(Category_.id));
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
+
+    @Test
+    public void testTotalSalesByClient() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Order> root = criteriaQuery.from(Order.class);
+        Join<Order, Client> clientJoin = root.join(Order_.client);
+
+        criteriaQuery.multiselect(
+            clientJoin.get(Client_.name),
+            criteriaBuilder.sum(root.get(Order_.total))
+        );
+
+        criteriaQuery.groupBy(clientJoin.get(Client_.id));
 
         TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
         List<Object[]> items = query.getResultList();
