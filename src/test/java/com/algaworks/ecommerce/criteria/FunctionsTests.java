@@ -145,4 +145,24 @@ public class FunctionsTests extends EntityManagerTests {
 		Assertions.assertFalse(items.isEmpty());
 		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+
+	@Test
+	public void testAggregationFunctions() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+
+		criteriaQuery.multiselect(
+			criteriaBuilder.count(root.get(Order_.id)),
+			criteriaBuilder.avg(root.get(Order_.total)),
+			criteriaBuilder.sum(root.get(Order_.total)),
+			criteriaBuilder.min(root.get(Order_.total)),
+			criteriaBuilder.max(root.get(Order_.total))
+		);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }
