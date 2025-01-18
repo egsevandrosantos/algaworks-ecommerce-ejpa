@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Client;
+import com.algaworks.ecommerce.model.Client_;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Product;
 
@@ -131,6 +132,25 @@ public class BasicCriteriaTests extends EntityManagerTests {
 		
 		for (ProductDTO dto : result) {
 			System.out.println(dto.getId() + "  -->  " + dto.getName());
+		}
+	}
+	
+	@Test
+	public void testOrderBy() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Client> criteriaQuery = criteriaBuilder.createQuery(Client.class);
+		Root<Client> root = criteriaQuery.from(Client.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(Client_.name)), criteriaBuilder.asc(root.get(Client_.birthDate)));
+		// criteriaQuery.orderBy(criteriaBuilder.desc(root.get(Client_.name)));
+		
+		TypedQuery<Client> query = entityManager.createQuery(criteriaQuery);
+		List<Client> clients = query.getResultList();
+		Assertions.assertFalse(clients.isEmpty());
+		for (Client client : clients) {
+			System.out.println(client.getId() + "  -->  " + client.getName());
 		}
 	}
 }
