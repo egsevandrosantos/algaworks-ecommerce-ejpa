@@ -121,4 +121,28 @@ public class FunctionsTests extends EntityManagerTests {
 		Assertions.assertFalse(items.isEmpty());
 		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
+
+	@Test
+	public void testNativeFunctions() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+
+		criteriaQuery.multiselect(
+			root.get(Order_.id),
+			root.get(Order_.createdAt),
+			criteriaBuilder.function("dayname", String.class, root.get(Order_.createdAt))
+		);
+
+		criteriaQuery.where(
+			criteriaBuilder.isTrue(
+				criteriaBuilder.function("greater_than_average_billing", Boolean.class, root.get(Order_.total))
+			)
+		);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
 }

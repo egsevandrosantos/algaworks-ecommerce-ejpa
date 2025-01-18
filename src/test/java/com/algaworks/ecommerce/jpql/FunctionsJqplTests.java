@@ -79,8 +79,8 @@ public class FunctionsJqplTests extends EntityManagerTests {
 	@Test
 	public void testNativeFunctions() {
 		// FUNCTION 'dayname' is from MySQL
-		// FUNCTION 'greather_than_average_billing' is mine
-		String jpql = "SELECT FUNCTION('dayname', o.createdAt) FROM Order o WHERE FUNCTION('greather_than_average_billing', o.total) = 1"; // FUNCTION(name, ...params) = 1 ? true : false
+		// FUNCTION 'greater_than_average_billing' is mine
+		String jpql = "SELECT FUNCTION('dayname', o.createdAt) FROM Order o WHERE FUNCTION('greater_than_average_billing', o.total) = 1"; // FUNCTION(name, ...params) = 1 ? true : false
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		
