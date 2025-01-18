@@ -6,3 +6,5 @@ target/
 .settings
 .factorypath
 
+### IntelliJ IDEA ###
+.idea

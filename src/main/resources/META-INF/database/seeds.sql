@@ -38,6 +38,7 @@ INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('9e0371a4-0c0c-4ee0-9e64
 /* INHERITANCE WITH SINGLE_TABLE */
 INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), 'PROCESSING', '1234 5678 9012 3456', 'CardPayment');
 INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), 'PROCESSING', '1234 5678 9012 3456', 'CardPayment');
+INSERT INTO payments (order_id, status, barcode, due_date, dtype) VALUES (UNHEX(REPLACE('b5f64582-a54b-4c31-98cc-058f6ab36a76', '-', '')), 'PROCESSING', '12345.12345', DATE_ADD(SYSDATE(), INTERVAL 2 DAY), 'BankSlipPayment');
 
 /* INHERITANCE WITH TABLE_PER_CLASS */
 -- INSERT INTO card_payments (order_id, status, card_number) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), 'PROCESSING', '1234 5678 9012 3456');

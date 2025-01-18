@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import java.time.Instant;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import lombok.Setter;
 public class BankSlipPayment extends Payment {
 	@Column(length = 100)
 	private String barcode;
+	@Column(name = "due_date")
+	private Instant dueDate;
 	
 	@Override
 	public boolean fullEquals(Object obj) {
