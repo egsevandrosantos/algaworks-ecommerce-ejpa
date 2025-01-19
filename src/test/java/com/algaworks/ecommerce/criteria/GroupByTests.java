@@ -72,4 +72,35 @@ public class GroupByTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testGroupByWithFunctions() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Order> root = criteriaQuery.from(Order.class);
+
+        Expression<Integer> yearExpression = criteriaBuilder.function("year", Integer.class, root.get(Order_.createdAt));
+        Expression<Integer> monthExpression = criteriaBuilder.function("month", Integer.class, root.get(Order_.createdAt));
+        Expression<String> monthnameExpression = criteriaBuilder.function("monthname", String.class, root.get(Order_.createdAt));
+
+        Expression<String> yearMonthName = criteriaBuilder.concat(
+            criteriaBuilder.concat(
+                yearExpression.as(String.class),
+                "/"
+            ),
+            monthnameExpression
+        );
+
+        criteriaQuery.multiselect(
+            yearMonthName,
+            criteriaBuilder.sum(root.get(Order_.total))
+        );
+
+        criteriaQuery.groupBy(yearExpression, monthExpression, yearMonthName);
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
