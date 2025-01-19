@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import com.algaworks.ecommerce.model.*;
 import org.junit.jupiter.api.Assertions;
@@ -193,6 +194,34 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 				.when(CardPayment.class, "Card payment")
 				.otherwise("Invalid")
 		);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+	}
+
+	@Test
+	public void testIn() {
+		/*List<UUID> ids = List.of(
+			UUID.fromString("24be65bf-8e80-477c-81c5-277697b1bd37"),
+			UUID.fromString("07e419cc-f461-42c6-8055-fca267c407ef")
+		);*/
+		Client client1 = entityManager.find(Client.class, UUID.fromString("00492c10-234a-4388-9375-2da767ce0d6a"));
+
+		Client client2 = new Client();
+		client2.setId(UUID.fromString("737fac65-ec05-4173-a522-00833a22271b"));
+
+		List<Client> clients = List.of(client1, client2);
+
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+
+		criteriaQuery.multiselect(root.get(Order_.id), root.get(Order_.client).get(Client_.id));
+
+		// criteriaQuery.where(root.get(Order_.id).in(ids));
+		criteriaQuery.where(root.get(Order_.client).in(clients));
 
 		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
 		List<Object[]> items = query.getResultList();
