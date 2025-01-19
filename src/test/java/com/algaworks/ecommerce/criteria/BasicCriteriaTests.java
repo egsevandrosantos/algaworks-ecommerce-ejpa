@@ -4,15 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import com.algaworks.ecommerce.model.*;
+import jakarta.persistence.criteria.Join;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.dto.ProductDTO;
-import com.algaworks.ecommerce.model.Client;
-import com.algaworks.ecommerce.model.Client_;
-import com.algaworks.ecommerce.model.Order;
-import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
@@ -152,5 +150,22 @@ public class BasicCriteriaTests extends EntityManagerTests {
 		for (Client client : clients) {
 			System.out.println(client.getId() + "  -->  " + client.getName());
 		}
+	}
+
+	@Test
+	public void testDistinct() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		root.join(Order_.items);
+
+		criteriaQuery
+			.multiselect(root.get(Order_.id))
+			.distinct(true);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
 }
