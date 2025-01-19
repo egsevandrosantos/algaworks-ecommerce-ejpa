@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,6 +98,35 @@ public class GroupByTests extends EntityManagerTests {
         );
 
         criteriaQuery.groupBy(yearExpression, monthExpression, yearMonthName);
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
+
+    @Test
+    public void testGroupByWithHaving() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<OrderItem> root = criteriaQuery.from(OrderItem.class);
+        Join<OrderItem, Product> productJoin = root.join(OrderItem_.product);
+        Join<Product, Category> categoryJoin = productJoin.join(Product_.categories);
+
+        criteriaQuery.multiselect(
+            categoryJoin.get(Category_.name),
+            criteriaBuilder.sum(criteriaBuilder.prod(root.get(OrderItem_.productPrice), root.get(OrderItem_.quantity)))
+        );
+
+        criteriaQuery.groupBy(categoryJoin.get(Category_.id));
+        criteriaQuery.having(
+            criteriaBuilder.greaterThan(
+                criteriaBuilder.sum(
+                    criteriaBuilder.prod(root.get(OrderItem_.productPrice), root.get(OrderItem_.quantity))
+                ).as(BigDecimal.class),
+                new BigDecimal("30.00")
+            )
+        );
 
         TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
         List<Object[]> items = query.getResultList();
