@@ -3,18 +3,14 @@ package com.algaworks.ecommerce.criteria;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.List;
 
+import com.algaworks.ecommerce.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTests;
-import com.algaworks.ecommerce.model.Client;
-import com.algaworks.ecommerce.model.Client_;
-import com.algaworks.ecommerce.model.Order;
-import com.algaworks.ecommerce.model.Order_;
-import com.algaworks.ecommerce.model.Product;
-import com.algaworks.ecommerce.model.Product_;
 
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -175,5 +171,32 @@ public class ConditionalExpressionsTests extends EntityManagerTests {
 		Assertions.assertFalse(orders.isEmpty());
 		
 		System.out.println(orders.size());
+	}
+
+	@Test
+	public void testCase() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+
+		criteriaQuery.multiselect(
+			root.get(Order_.id),
+			root.get(Order_.status),
+			criteriaBuilder.selectCase(root.get(Order_.status))
+				.when(OrderStatus.WAITING, "Wait a minute")
+				.when(OrderStatus.PAID, "Already paid")
+				.when(OrderStatus.CANCELLED, "Already cancelled")
+				.otherwise("Invalid"),
+			root.get(Order_.payment).type(),
+			criteriaBuilder.selectCase(root.get(Order_.payment).type())
+				.when(BankSlipPayment.class, "Bank slip payment")
+				.when(CardPayment.class, "Card payment")
+				.otherwise("Invalid")
+		);
+
+		TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+		List<Object[]> items = query.getResultList();
+		Assertions.assertFalse(items.isEmpty());
+		items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
 	}
 }
