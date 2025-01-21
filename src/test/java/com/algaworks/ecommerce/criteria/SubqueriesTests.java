@@ -1,10 +1,7 @@
 package com.algaworks.ecommerce.criteria;
 
 import com.algaworks.ecommerce.EntityManagerTests;
-import com.algaworks.ecommerce.model.Order;
-import com.algaworks.ecommerce.model.Order_;
-import com.algaworks.ecommerce.model.Product;
-import com.algaworks.ecommerce.model.Product_;
+import com.algaworks.ecommerce.model.*;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -61,6 +58,28 @@ public class SubqueriesTests extends EntityManagerTests {
                 subqueryAvgTotal
             )
         );
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
+
+    @Test
+    public void testFindGoodClients() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Client> root = criteriaQuery.from(Client.class);
+
+        criteriaQuery.multiselect(root.get(Client_.name));
+
+        Subquery<BigDecimal> subquerySumOrders = criteriaQuery.subquery(BigDecimal.class);
+        Root<Order> rootSubquerySumOrders = subquerySumOrders.from(Order.class);
+        subquerySumOrders.select(criteriaBuilder.sum(rootSubquerySumOrders.get(Order_.total)));
+
+        subquerySumOrders.where(criteriaBuilder.equal(root, rootSubquerySumOrders.get(Order_.client)));
+
+        criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(subquerySumOrders, new BigDecimal("20.00")));
 
         TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
         List<Object[]> items = query.getResultList();
