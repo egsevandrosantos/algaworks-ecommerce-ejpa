@@ -109,4 +109,28 @@ public class SubqueriesTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testSubqueryWithExists() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        criteriaQuery.multiselect(root.get(Product_.name));
+
+        Subquery<Integer> subqueryProductAlreadySold = criteriaQuery.subquery(Integer.class);
+        Root<OrderItem> rootSubqueryProductAlreadySold = subqueryProductAlreadySold.from(OrderItem.class);
+        Join<OrderItem, Product> joinProductSubqueryProductAlreadySold = rootSubqueryProductAlreadySold.join(OrderItem_.product);
+
+        subqueryProductAlreadySold.select(criteriaBuilder.literal(1));
+
+        subqueryProductAlreadySold.where(criteriaBuilder.equal(joinProductSubqueryProductAlreadySold, root));
+
+        criteriaQuery.where(criteriaBuilder.exists(subqueryProductAlreadySold));
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
