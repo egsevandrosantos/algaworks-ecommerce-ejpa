@@ -281,4 +281,60 @@ public class SubqueriesTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testAnyFindProductsAlreadySoldWithActualPrice() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+        criteriaQuery.multiselect(root.get(Product_.name));
+
+        Subquery<BigDecimal> subquery = criteriaQuery.subquery(BigDecimal.class);
+        Root<OrderItem> rootSubquery = subquery.from(OrderItem.class);
+        subquery.select(rootSubquery.get(OrderItem_.productPrice));
+
+        subquery.where(
+            criteriaBuilder.equal(rootSubquery.get(OrderItem_.product), root)
+        );
+
+        criteriaQuery.where(
+            criteriaBuilder.equal(
+                root.get(Product_.price), criteriaBuilder.any(subquery)
+            )
+        );
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
+
+    @Test
+    public void testAnyFindProductsAlreadySoldWithNotActualPrice() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+        criteriaQuery.multiselect(root.get(Product_.name));
+
+        Subquery<BigDecimal> subquery = criteriaQuery.subquery(BigDecimal.class);
+        Root<OrderItem> rootSubquery = subquery.from(OrderItem.class);
+        subquery.select(rootSubquery.get(OrderItem_.productPrice));
+
+        subquery.where(
+            criteriaBuilder.equal(rootSubquery.get(OrderItem_.product), root)
+        );
+
+        criteriaQuery.where(
+            criteriaBuilder.notEqual(
+                root.get(Product_.price), criteriaBuilder.any(subquery)
+            )
+        );
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
