@@ -337,4 +337,37 @@ public class SubqueriesTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testFindProductsAlwaysSoldWithSamePriceWithAll() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<OrderItem> root = criteriaQuery.from(OrderItem.class);
+        Join<OrderItem, Product> joinProduct = root.join(OrderItem_.product);
+        criteriaQuery.multiselect(
+            joinProduct.get(Product_.name)
+        ).distinct(true);
+
+        Subquery<BigDecimal> subquery = criteriaQuery.subquery(BigDecimal.class);
+        Root<OrderItem> rootSubquery = subquery.from(OrderItem.class);
+        subquery.select(rootSubquery.get(OrderItem_.productPrice));
+
+        subquery.where(criteriaBuilder.equal(joinProduct, rootSubquery.get(OrderItem_.product)));
+
+        criteriaQuery.where(criteriaBuilder.equal(root.get(OrderItem_.productPrice), criteriaBuilder.all(subquery)));
+
+        /*criteriaQuery.groupBy(joinProduct);
+        criteriaQuery.having(
+            criteriaBuilder.equal(
+                criteriaBuilder.min(root.get(OrderItem_.productPrice)),
+                criteriaBuilder.max(root.get(OrderItem_.productPrice))
+            )
+        );*/
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
