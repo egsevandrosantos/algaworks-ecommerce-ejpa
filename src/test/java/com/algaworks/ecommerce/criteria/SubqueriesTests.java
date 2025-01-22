@@ -133,4 +133,32 @@ public class SubqueriesTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testFindClientsWithMoreThen2Orders() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Client> root = criteriaQuery.from(Client.class);
+        criteriaQuery.multiselect(root.get(Client_.name));
+
+        Subquery<Long> subqueryOrdersByClient = criteriaQuery.subquery(Long.class);
+        Root<Order> rootSubqueryOrdersByClient = subqueryOrdersByClient.from(Order.class);
+        Join<Order, Client> clientJoinSubqueryOrdersByClient = rootSubqueryOrdersByClient.join(Order_.client);
+        subqueryOrdersByClient.select(criteriaBuilder.count(criteriaBuilder.literal(1)));
+
+        subqueryOrdersByClient.where(criteriaBuilder.equal(clientJoinSubqueryOrdersByClient, root));
+
+        criteriaQuery.where(
+            criteriaBuilder.greaterThan(
+                subqueryOrdersByClient,
+                2L
+            )
+        );
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
