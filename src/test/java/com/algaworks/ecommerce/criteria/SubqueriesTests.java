@@ -161,4 +161,29 @@ public class SubqueriesTests extends EntityManagerTests {
         Assertions.assertFalse(items.isEmpty());
         items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
     }
+
+    @Test
+    public void testFindOrdersWithProductsByCategory() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Order> root = criteriaQuery.from(Order.class);
+        Join<Order, OrderItem> joinOrderItem = root.join(Order_.items);
+        criteriaQuery.multiselect(root.get(Order_.id));
+
+        Subquery<OrderItem> subqueryProductsByCategory = criteriaQuery.subquery(OrderItem.class);
+        Root<OrderItem> rootSubqueryProductsByCategory = subqueryProductsByCategory.from(OrderItem.class);
+        Join<OrderItem, Product> joinProductSubquery = rootSubqueryProductsByCategory.join(OrderItem_.product);
+        Join<Product, Category> joinCategorySubquery = joinProductSubquery.join(Product_.categories);
+        subqueryProductsByCategory.select(rootSubqueryProductsByCategory);
+
+        subqueryProductsByCategory.where(criteriaBuilder.equal(joinCategorySubquery.get(Category_.id), UUID.fromString("d9e5d6f8-6605-4dcd-a21a-3839407a0a1f")));
+
+        criteriaQuery.where(joinOrderItem.in(subqueryProductsByCategory));
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        items.forEach(arr -> System.out.println(String.join("  -->  ", Arrays.stream(arr).map(Object::toString).toList())));
+    }
 }
