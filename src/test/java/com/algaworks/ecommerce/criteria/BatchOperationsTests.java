@@ -43,4 +43,24 @@ public class BatchOperationsTests extends EntityManagerTests {
 
         entityManager.getTransaction().commit();
     }
+
+    @Test
+    public void testBatchDelete() {
+        entityManager.getTransaction().begin();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaDelete<Product> criteriaDelete = criteriaBuilder.createCriteriaDelete(Product.class);
+        Root<Product> root = criteriaDelete.from(Product.class);
+        criteriaDelete.where(
+            criteriaBuilder.equal(root.get(Product_.id), UUID.fromString("849c840b-63fa-44b8-9883-47d9940adf8b"))
+        );
+
+        Query query = entityManager.createQuery(criteriaDelete);
+        int deleted = query.executeUpdate();
+        Assertions.assertNotEquals(0, deleted);
+        System.out.println(deleted);
+
+        entityManager.getTransaction().commit();
+    }
 }
