@@ -4,14 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +14,13 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "order_items")
+@SqlResultSetMapping(
+	name = "OrderItem_Product",
+	entities = {
+		@EntityResult(entityClass = OrderItem.class),
+		@EntityResult(entityClass = Product.class)
+	}
+)
 public class OrderItem {
 	@EqualsAndHashCode.Include
 	@EmbeddedId

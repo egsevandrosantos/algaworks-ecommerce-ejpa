@@ -42,4 +42,26 @@ public class NativeQueryTests extends EntityManagerTests {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }
+
+    @Test
+    public void testSqlResultSetMapping1() {
+        String sql = "SELECT * FROM products";
+        Query query = entityManager.createNativeQuery(sql, "Product");
+        List<Product> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
+
+    @Test
+    public void testSqlResultSetMapping2() {
+        String sql = "SELECT oi.*, p.* FROM order_items oi JOIN products p ON oi.product_id = p.id";
+        Query query = entityManager.createNativeQuery(sql, "OrderItem_Product");
+        List<Object[]> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Object[] item : items) {
+            System.out.println("Type 1: " + item[0].getClass().getName() + ", Type 2: " + item[1].getClass().getName());
+        }
+    }
 }

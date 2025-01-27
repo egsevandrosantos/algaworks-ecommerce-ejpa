@@ -5,22 +5,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +33,7 @@ import lombok.Setter;
 		)
 	}
 )
+@SqlResultSetMapping(name = "Product", entities = { @EntityResult(entityClass = Product.class) })
 public class Product extends BaseEntityId {
 	// Without @Column with customizations default is VARCHAR(255)
 	// With this customization: VARCHAR(100) NOT NULL
