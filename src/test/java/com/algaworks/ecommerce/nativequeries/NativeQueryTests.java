@@ -30,4 +30,16 @@ public class NativeQueryTests extends EntityManagerTests {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }
+
+    @Test
+    public void testParametersInQuery() {
+        String sql = "SELECT * FROM products WHERE name = :name";
+        Query query = entityManager.createNativeQuery(sql, Product.class);
+        query.setParameter("name", "PS5");
+        List<Product> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
 }
