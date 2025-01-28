@@ -87,4 +87,24 @@ public class NativeQueryTests extends EntityManagerTests {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }
+
+    @Test
+    public void testNamedQuery1() {
+        Query query = entityManager.createNamedQuery("products.select_all", Product.class);
+        List<Product> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
+
+    @Test
+    public void testNamedQuery2() {
+        Query query = entityManager.createNamedQuery("ecm_products.select_all", Product.class);
+        List<Product> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
 }

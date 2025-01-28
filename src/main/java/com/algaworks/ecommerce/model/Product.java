@@ -67,6 +67,10 @@ import lombok.Setter;
 		}
 	)
 })
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "products.select_all", query = "SELECT * FROM products", resultClass = Product.class),
+	@NamedNativeQuery(name = "ecm_products.select_all", query = "SELECT * FROM ecm_products", resultSetMapping = "ecm.Product")
+})
 public class Product extends BaseEntityId {
 	// Without @Column with customizations default is VARCHAR(255)
 	// With this customization: VARCHAR(100) NOT NULL
