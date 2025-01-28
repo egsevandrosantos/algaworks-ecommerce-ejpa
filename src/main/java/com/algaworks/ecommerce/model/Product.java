@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
+import com.algaworks.ecommerce.dto.ProductDTO;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,6 +50,18 @@ import lombok.Setter;
 					@FieldResult(name = "photo", column = "product_photo"),
 					@FieldResult(name = "createdAt", column = "product_created_at"),
 					@FieldResult(name = "updatedAt", column = "product_updated_at"),
+				}
+			)
+		}
+	),
+	@SqlResultSetMapping(
+		name = "ecm.ProductDTO",
+		classes = {
+			@ConstructorResult(
+				targetClass = ProductDTO.class,
+				columns = {
+					@ColumnResult(name = "product_id", type = UUID.class),
+					@ColumnResult(name = "product_name", type = String.class)
 				}
 			)
 		}

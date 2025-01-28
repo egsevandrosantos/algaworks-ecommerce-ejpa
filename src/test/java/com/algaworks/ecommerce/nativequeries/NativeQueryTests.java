@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.nativequeries;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Product;
 import jakarta.persistence.Query;
 import org.junit.jupiter.api.Assertions;
@@ -72,6 +73,17 @@ public class NativeQueryTests extends EntityManagerTests {
         List<Product> items = query.getResultList();
         Assertions.assertFalse(items.isEmpty());
         for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
+
+    @Test
+    public void testColumnResultToDTO() {
+        String sql = "SELECT * FROM ecm_products";
+        Query query = entityManager.createNativeQuery(sql, "ecm.ProductDTO");
+        List<ProductDTO> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (ProductDTO item : items) {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }
