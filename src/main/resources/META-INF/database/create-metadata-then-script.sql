@@ -8,6 +8,6 @@ CREATE TABLE ecm_categories (category_id BINARY(16) NOT NULL, category_parent_id
 
 create procedure get_product_name (in product_id binary(16), out product_name varchar(255)) begin select name into product_name from products where id = product_id; end
 
-create procedure buy_greater_than_avg (in year integer) begin select c.* from clients c join orders o on o.client_id = c.id where o.status = 'PAID' and year(o.created_at) = year group by o.client_id having sum(o.total) >= ( select avg(total_by_client.sum_total) from ( select sum(o1.total) sum_total from orders o1 where o.status = 'PAID' and year(o1.created_at) = year group by o1.client_id ) as total_by_client ); end
+create procedure buy_greater_than_avg (in year integer) begin select c.*, cd.* from clients c join clients_details cd on cd.client_id = c.id join orders o on o.client_id = c.id where o.status = 'PAID' and year(o.created_at) = year group by o.client_id having sum(o.total) >= (select avg(total_by_client.sum_total) from (select sum(o1.total) sum_total from orders o1 where o1.status = 'PAID' and year(o1.created_at) = year group by o1.client_id) as total_by_client); end
 
 create procedure fixing_product_price (in product_id binary(16), in percentage_fixing double, out new_price double) begin declare product_price double; select price into product_price from products where id = product_id; set new_price = product_price + (product_price * percentage_fixing); update products set price = new_price where id = product_id; end
