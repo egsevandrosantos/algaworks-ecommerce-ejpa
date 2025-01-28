@@ -64,4 +64,15 @@ public class NativeQueryTests extends EntityManagerTests {
             System.out.println("Type 1: " + item[0].getClass().getName() + ", Type 2: " + item[1].getClass().getName());
         }
     }
+
+    @Test
+    public void testFieldResult() {
+        String sql = "SELECT * FROM ecm_products";
+        Query query = entityManager.createNativeQuery(sql, "ecm.Product");
+        List<Product> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
 }

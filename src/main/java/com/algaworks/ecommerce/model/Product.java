@@ -33,7 +33,26 @@ import lombok.Setter;
 		)
 	}
 )
-@SqlResultSetMapping(name = "Product", entities = { @EntityResult(entityClass = Product.class) })
+@SqlResultSetMappings({
+	@SqlResultSetMapping(name = "Product", entities = {@EntityResult(entityClass = Product.class)}),
+	@SqlResultSetMapping(
+		name = "ecm.Product",
+		entities = {
+			@EntityResult(
+				entityClass = Product.class,
+				fields = {
+					@FieldResult(name = "id", column = "product_id"),
+					@FieldResult(name = "name", column = "product_name"),
+					@FieldResult(name = "description", column = "product_description"),
+					@FieldResult(name = "price", column = "product_price"),
+					@FieldResult(name = "photo", column = "product_photo"),
+					@FieldResult(name = "createdAt", column = "product_created_at"),
+					@FieldResult(name = "updatedAt", column = "product_updated_at"),
+				}
+			)
+		}
+	)
+})
 public class Product extends BaseEntityId {
 	// Without @Column with customizations default is VARCHAR(255)
 	// With this customization: VARCHAR(100) NOT NULL

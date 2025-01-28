@@ -3,7 +3,9 @@ INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(RE
 INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('4e3a1229-050e-4049-9a85-54885aa5e875', '-', '')), 'Mochila Gamer', 200.00, 'Para notebooks de 15" e 17".', '2024-12-01 12:00:00.000');
 INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('73beb2ec-5a28-43db-93a8-0cdd823fc2c6', '-', '')), 'Joystick', 250.00, 'PS5 Joystick', '2024-12-01 12:00:00.000');
 INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('225ef043-f0a4-4c6d-b896-0ebf415dad93', '-', '')), 'PS5', 3550.00, 'PS5', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('849c840b-63fa-44b8-9883-47d9940adf8b', '-', '')), 'PS4', 1500.00, 'PS3', '2024-12-01 12:00:00.000');
+INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('849c840b-63fa-44b8-9883-47d9940adf8b', '-', '')), 'PS4', 1500.00, 'PS4', '2024-12-01 12:00:00.000');
+
+INSERT INTO ecm_products (product_id, product_name, product_price, product_description, product_created_at) VALUES (UNHEX(REPLACE('6cb5d716-f087-47a8-8edd-1d262a9da5f7', '-', '')), 'PS3', 500.00, 'PS3', '2024-12-01 12:00:00.000');
 
 INSERT INTO clients (id, name, cpf) VALUES (UNHEX(REPLACE('737fac65-ec05-4173-a522-00833a22271b', '-', '')), 'João da Silva', '588.891.730-33');
 INSERT INTO clients (id, name, cpf) VALUES (UNHEX(REPLACE('00492c10-234a-4388-9375-2da767ce0d6a', '-', '')), 'Manoel', '915.364.463-86');
