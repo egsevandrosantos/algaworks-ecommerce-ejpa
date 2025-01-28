@@ -53,4 +53,14 @@ public class StoredProceduresTests extends EntityManagerTests {
         BigDecimal expectedPrice = new BigDecimal("1500.00").multiply(HUNDRED_PER_CENT.add(TEN_PER_CENT));
         Assertions.assertEquals(0, expectedPrice.compareTo(newPrice));
     }
+
+    @Test
+    public void testNamedStoredProcedureQuery() {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createNamedStoredProcedureQuery("Client.buy_greater_than_avg");
+
+        storedProcedureQuery.setParameter("year", 2025);
+        storedProcedureQuery.execute();
+        List<Client> items = storedProcedureQuery.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+    }
 }

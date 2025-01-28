@@ -8,24 +8,7 @@ import java.util.Optional;
 
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.SecondaryTable;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,6 +37,14 @@ import lombok.Setter;
 	name = "clients_details",
 	pkJoinColumns = @PrimaryKeyJoinColumn(name = "client_id"),
 	foreignKey = @ForeignKey(name = "fk_client_detail_client")
+)
+@NamedStoredProcedureQuery(
+	name = "Client.buy_greater_than_avg",
+	procedureName = "buy_greater_than_avg",
+	resultClasses = { Client.class },
+	parameters = {
+		@StoredProcedureParameter(name = "year", type = Integer.class, mode = ParameterMode.IN)
+	}
 )
 public class Client extends BaseEntityId {
 	@Column(length = 100, nullable = false)
