@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.nativequeries;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.dto.CategoryDTO;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.Product;
@@ -115,6 +116,16 @@ public class NativeQueryTests extends EntityManagerTests {
         List<Category> items = query.getResultList();
         Assertions.assertFalse(items.isEmpty());
         for (Category item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
+
+    @Test
+    public void testNamedQueryInXmlReturnDTO() {
+        Query query = entityManager.createNamedQuery("ecm.CategoryDTO.selectAll", CategoryDTO.class);
+        List<CategoryDTO> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (CategoryDTO item : items) {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }
