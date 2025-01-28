@@ -12,5 +12,17 @@
 	<named-query name="Order.findByProduct">
 		<query>SELECT o FROM Order o JOIN o.items i JOIN i.product p WHERE p.id = :productId</query>
 	</named-query>
+
+	<named-native-query name="ecm_categories.selectAll" result-set-mapping="ecm_categories.Category"> <!-- result-class="com.algaworks.ecommerce.model.Category" -->
+		<query>SELECT * FROM ecm_categories</query>
+	</named-native-query>
+
+	<sql-result-set-mapping name="ecm_categories.Category">
+		<entity-result entity-class="com.algaworks.ecommerce.model.Category">
+			<field-result name="id" column="category_id"/>
+			<field-result name="name" column="category_name"/>
+			<field-result name="parent" column="category_parent_id"/>
+		</entity-result>
+	</sql-result-set-mapping>
 	
 </entity-mappings>

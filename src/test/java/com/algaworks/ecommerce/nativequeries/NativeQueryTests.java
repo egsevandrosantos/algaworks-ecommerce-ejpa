@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.nativequeries;
 
 import com.algaworks.ecommerce.EntityManagerTests;
 import com.algaworks.ecommerce.dto.ProductDTO;
+import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.Product;
 import jakarta.persistence.Query;
 import org.junit.jupiter.api.Assertions;
@@ -104,6 +105,16 @@ public class NativeQueryTests extends EntityManagerTests {
         List<Product> items = query.getResultList();
         Assertions.assertFalse(items.isEmpty());
         for (Product item : items) {
+            System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
+        }
+    }
+
+    @Test
+    public void testNamedQueryInXml() {
+        Query query = entityManager.createNamedQuery("ecm_categories.selectAll", Category.class);
+        List<Category> items = query.getResultList();
+        Assertions.assertFalse(items.isEmpty());
+        for (Category item : items) {
             System.out.println("Id: " + item.getId() + ", Name: " + item.getName());
         }
     }

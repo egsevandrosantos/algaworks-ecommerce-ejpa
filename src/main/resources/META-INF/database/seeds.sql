@@ -37,6 +37,8 @@ INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('77bcff79-5b4e-45e4-81e6
 INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('362df1eb-8707-4cc0-99b3-aea50c6747d7', '-', '')), 'Notebooks');
 INSERT INTO categories (id, name) VALUES (UNHEX(REPLACE('9e0371a4-0c0c-4ee0-9e64-7497e72190af', '-', '')), 'Smartphones');
 
+INSERT INTO ecm_categories (category_id, category_name) VALUES (UNHEX(REPLACE('8b7aeedd-da63-4785-88c0-a2f27614b29d', '-', '')), 'Smartphones');
+
 /* INHERITANCE WITH SINGLE_TABLE */
 INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLACE('47cbd3b5-aa9a-4644-95b3-0d9ca0551328', '-', '')), 'PROCESSING', '1234 5678 9012 3456', 'CardPayment');
 INSERT INTO payments (order_id, status, card_number, dtype) VALUES (UNHEX(REPLACE('24be65bf-8e80-477c-81c5-277697b1bd37', '-', '')), 'PROCESSING', '1234 5678 9012 3456', 'CardPayment');
