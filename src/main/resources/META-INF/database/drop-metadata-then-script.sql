@@ -11,3 +11,5 @@ DROP procedure search_product_by_name;
 DROP procedure buy_greater_than_avg;
 
 DROP procedure fixing_product_price;
+
+DROP VIEW view_buy_greater_than_avg;
