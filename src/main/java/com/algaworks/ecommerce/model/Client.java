@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,19 +48,27 @@ import lombok.Setter;
 	}
 )
 public class Client extends BaseEntityId {
+	@NotBlank
 	@Column(length = 100, nullable = false)
 	private String name;
+
 	@Transient
 	private String firstName;
+
+	@NotBlank
 	@Column(length = 14, nullable = false)
 	private String cpf;
+
 	@Enumerated(EnumType.STRING)
 	@Column(table = "clients_details", nullable = false)
 	private ClientSex sex;
+
 	@Column(table = "clients_details", name = "birth_date")
 	private LocalDate birthDate;
+
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders;
+
 	@ElementCollection
 	@CollectionTable(
 		name = "clients_contacts",

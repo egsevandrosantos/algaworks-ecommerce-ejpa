@@ -7,6 +7,9 @@
     	<!-- To specify a file where path and name not is META-INF/orm.xml (Default path and name) -->
     	<!-- <mapping-file>META-INF/named-queries/order.xml</mapping-file> -->
     	<!-- <mapping-file>META-INF/named-queries/product.xml</mapping-file> -->
+
+        <!-- Require implementation bean validation -->
+        <validation-mode>CALLBACK</validation-mode>
     	
         <properties>
             <property name="jakarta.persistence.jdbc.url"
