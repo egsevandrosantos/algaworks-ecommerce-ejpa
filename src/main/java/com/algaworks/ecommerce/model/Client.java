@@ -10,6 +10,9 @@ import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,9 +59,11 @@ public class Client extends BaseEntityId {
 	private String firstName;
 
 	@NotBlank
+	@Pattern(regexp = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$")
 	@Column(length = 14, nullable = false)
 	private String cpf;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(table = "clients_details", nullable = false)
 	private ClientSex sex;
@@ -69,6 +74,7 @@ public class Client extends BaseEntityId {
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders;
 
+	@NotEmpty
 	@ElementCollection
 	@CollectionTable(
 		name = "clients_contacts",

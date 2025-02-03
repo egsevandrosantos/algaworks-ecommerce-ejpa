@@ -31,6 +31,10 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,33 +48,51 @@ import lombok.Setter;
 @EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
 public class Order extends BaseEntityId {
 	// CascadeType.PERSIST = Persist client and persist order
+	@NotNull
 	@ManyToOne(optional = false, cascade = CascadeType.PERSIST) /*(fetch = FetchType.LAZY)*/ // Without @JoinColumn the column name is property name + _ + property id in Client class (client_id)
 	@JoinColumn(name = "client_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_client"))
 	private Client client;
+
+	@PastOrPresent
+	@NotNull
 	@Column(name = "created_at", nullable = false)
 	@Setter(value = AccessLevel.NONE)
 	private Instant createdAt;
+
+	@PastOrPresent
 	@Column(name = "updated_at")
 	@Setter(value = AccessLevel.NONE)
 	private Instant updatedAt;
+
+	@PastOrPresent
 	@Column(name = "finished_at")
 	private Instant finishedAt;
+
+	@Positive
+	@NotNull
 	@Column(precision = 19, scale = 2, nullable = false)
 	private BigDecimal total;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private OrderStatus status;
+
 	@Embedded
 	private OrderAddress address;
+
 	// CascadeType.PERSIST = Persist order and persist items
 	// CascadeType.MERGE = Merge order and merge items
 	// CascadeType.REMOVE = Remove order and remove items
 	// @OneToMany and @OneToOne has property orphanRemoval = CascadeType.REMOVE
 	// getItems().clear() not delete with CascadeType.REMOVE but with orphanRemoval (because we don't have a remove command, but object is orphan in memory)
+	@NotEmpty
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true) /* CascadeType.REMOVE, fetch = FetchType.EAGER */
 	private List<OrderItem> items;
+
 	@OneToOne(mappedBy = "order")
 	private Payment payment;
+
 	@OneToOne(mappedBy = "order")
 	private Invoice invoice;
 	
