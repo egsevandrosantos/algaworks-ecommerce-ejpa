@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,13 +33,17 @@ import lombok.Setter;
 	}
 )
 public class Category extends BaseEntityId {
+	@NotBlank
 	@Column(length = 100, nullable = false)
 	private String name;
+
 	@ManyToOne
 	@JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "fk_category_category"))
 	private Category parent;
+
 	@OneToMany(mappedBy = "parent")
 	private List<Category> children;
+
 	@ManyToMany(mappedBy = "categories")
 	private List<Product> products;
 	

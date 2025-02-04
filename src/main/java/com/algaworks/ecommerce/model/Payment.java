@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,11 +29,13 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Default SINGLE_TABLE for inheritance if not has configuration
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING) // Default if not has configuration. Used for inheritance with SINGLE_TABLE and JOINED
 public abstract class Payment extends BaseEntityId {
+	@NotNull
 	@MapsId
 	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_payment_order"))
 	private Order order;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private PaymentStatus status;

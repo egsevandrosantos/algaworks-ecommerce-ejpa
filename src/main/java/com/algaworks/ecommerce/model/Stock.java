@@ -3,12 +3,9 @@ package com.algaworks.ecommerce.model;
 import java.util.Objects;
 import java.util.Optional;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +24,14 @@ import lombok.Setter;
 	}
 )
 public class Stock extends BaseEntityId {
+	@NotNull
 	@OneToOne(optional = false)
 	@JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_stock_product"))
 	private Product product;
+
+	@NotNull
+	@PositiveOrZero
+	@Column(nullable = false)
 	private Integer quantity;
 	
 	public boolean fullEquals(Object obj) {

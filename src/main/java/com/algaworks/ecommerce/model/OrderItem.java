@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,18 +27,28 @@ public class OrderItem {
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrderItemId id;
+
 	// Don't need CascadeType.PERSIST to persist item and persist order because order is part of PK (@MapsId), so JPA persist automatically
 	// CascadeType.MERGE = Merge order item and merge order
+	@NotNull
 	@MapsId("orderId")
 	@ManyToOne(optional = false) /* cascade = { CascadeType.MERGE, CascadeType.REMOVE } */
 	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Order order;
+
+	@NotNull
 	@MapsId("productId")
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_item_product")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
 	private Product product;
+
+	@Positive
+	@NotNull
 	@Column(name = "product_price", precision = 19, scale = 2, nullable = false)
 	private BigDecimal productPrice;
+
+	@Positive
+	@NotNull
 	@Column(nullable = false)
 	private Integer quantity;
 	

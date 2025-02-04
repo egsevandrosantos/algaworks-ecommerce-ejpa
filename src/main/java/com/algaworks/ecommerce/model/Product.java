@@ -8,6 +8,10 @@ import java.util.UUID;
 
 import com.algaworks.ecommerce.dto.ProductDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,19 +79,29 @@ public class Product extends BaseEntityId {
 	// Without @Column with customizations default is VARCHAR(255)
 	// With this customization: VARCHAR(100) NOT NULL
 	// unique = true -> Create a unique constraint (name for index generate auto and only for single attribute)
+	@NotBlank
 	@Column(length = 100, nullable = false)
 	private String name;
+
 	// columnDefinition = SQL
 	// @Column(columnDefinition = "VARCHAR(275) NOT NULL DEFAULT 'description'")
 	@Lob // longtext
 	private String description;
+
 	// 10 are total, 8 integers and 2 decimals
+	@Positive
 	@Column(precision = 10, scale = 2) // DECIMAL(10,2)
 	private BigDecimal price;
+
+	@PastOrPresent
+	@NotNull
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private Instant createdAt;
+
+	@PastOrPresent
 	@Column(name = "updated_at", insertable = false) // For tests purpose
 	private Instant updatedAt;
+
 	// ManyToMany we remove relationship Product x Category, not the entity in database, and is removed automatically
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
@@ -98,8 +112,10 @@ public class Product extends BaseEntityId {
 		inverseJoinColumns = @JoinColumn(name = "category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_category"))
 	)
 	private List<Category> categories;
+
 	@OneToOne(mappedBy = "product")
 	private Stock stock;
+
 	@ElementCollection
 	@CollectionTable(
 		name = "products_tags", // Name of table
@@ -107,12 +123,14 @@ public class Product extends BaseEntityId {
 	)
 	@Column(name = "tag", length = 50, nullable = false) // Name to column in another table
 	private List<String> tags;
+
 	@ElementCollection
 	@CollectionTable(
 		name = "products_attributes",
 		joinColumns = @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_product_attribute"))
 	)
 	private List<Attribute> attributes;
+
 	@Lob
 	private byte[] photo;
 	

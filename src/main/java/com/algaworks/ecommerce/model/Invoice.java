@@ -14,6 +14,9 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +27,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "invoices")
 public class Invoice extends BaseEntityId {
+	@NotNull
 	@MapsId
 	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_invoice_order")) // , insertable = false, updatable = false) -> Unnecessary with @MapsId
@@ -34,10 +38,15 @@ public class Invoice extends BaseEntityId {
 		// inverseJoinColumns = @JoinColumn(name = "order_id", unique = true)
 	// )
 	private Order order;
+
+	@NotEmpty
 	@Lob
 	@Column(columnDefinition = "LONGBLOB NOT NULL")
 	private byte[] xml;
+
 	// If use Date type, use TemporalType.TIMESTAMP
+	@NotNull
+	@PastOrPresent
 	@Column(name = "emission_date", nullable = false)
 	private Instant emissionDate;
 	
