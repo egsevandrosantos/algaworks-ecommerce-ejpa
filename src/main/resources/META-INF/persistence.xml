@@ -17,6 +17,9 @@
             <property name="jakarta.persistence.jdbc.user" value="root" />
             <property name="jakarta.persistence.jdbc.password" value="admin" />
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            
+            <property name="hibernate.hikari.maximumPoolSize" value="16" />
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
 
 			<!-- DO NOT USE IN PRODUCTION -> EXECUTED WHEN FACTORY IS CREATED -->
             <!-- EXECUTE DROP, CREATE AND SEEDS -->
