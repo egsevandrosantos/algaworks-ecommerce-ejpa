@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.algaworks.ecommerce.dto.ProductDTO;
+import com.algaworks.ecommerce.model.converter.BooleanYesNoConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -133,6 +134,11 @@ public class Product extends BaseEntityId {
 
 	@Lob
 	private byte[] photo;
+
+	@Convert(converter = BooleanYesNoConverter.class)
+	@NotNull
+	@Column(nullable = false, length = 3)
+	private boolean active = Boolean.FALSE;
 	
 	public boolean fullEquals(Object obj) {
 		if (!this.equals(obj)) return false;

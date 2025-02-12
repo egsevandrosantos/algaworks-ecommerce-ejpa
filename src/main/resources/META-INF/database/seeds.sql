@@ -1,9 +1,9 @@
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), 'Kindle', 499.00, 'Conheça o novo Kindle, agora com iluminação embutida ajustável, que permite que você leia em ambientes abertos ou fechados, a qualquer hora do dia.', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('77c31aa8-14f5-4df1-9a96-fa03d6882f4f', '-', '')), 'Camera GoPro Hero 7', 1400.00, 'Desempenho 2x melhor.', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('4e3a1229-050e-4049-9a85-54885aa5e875', '-', '')), 'Mochila Gamer', 200.00, 'Para notebooks de 15" e 17".', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('73beb2ec-5a28-43db-93a8-0cdd823fc2c6', '-', '')), 'Joystick', 250.00, 'PS5 Joystick', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('225ef043-f0a4-4c6d-b896-0ebf415dad93', '-', '')), 'PS5', 3550.00, 'PS5', '2024-12-01 12:00:00.000');
-INSERT INTO products (id, name, price, description, created_at) VALUES (UNHEX(REPLACE('849c840b-63fa-44b8-9883-47d9940adf8b', '-', '')), 'PS4', 1500.00, 'PS4', '2024-12-01 12:00:00.000');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('ab5666b6-3106-469b-9e34-2963b801466a', '-', '')), 'Kindle', 499.00, 'Conheça o novo Kindle, agora com iluminação embutida ajustável, que permite que você leia em ambientes abertos ou fechados, a qualquer hora do dia.', '2024-12-01 12:00:00.000', 'YES');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('77c31aa8-14f5-4df1-9a96-fa03d6882f4f', '-', '')), 'Camera GoPro Hero 7', 1400.00, 'Desempenho 2x melhor.', '2024-12-01 12:00:00.000', 'YES');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('4e3a1229-050e-4049-9a85-54885aa5e875', '-', '')), 'Mochila Gamer', 200.00, 'Para notebooks de 15" e 17".', '2024-12-01 12:00:00.000', 'YES');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('73beb2ec-5a28-43db-93a8-0cdd823fc2c6', '-', '')), 'Joystick', 250.00, 'PS5 Joystick', '2024-12-01 12:00:00.000', 'YES');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('225ef043-f0a4-4c6d-b896-0ebf415dad93', '-', '')), 'PS5', 3550.00, 'PS5', '2024-12-01 12:00:00.000', 'YES');
+INSERT INTO products (id, name, price, description, created_at, active) VALUES (UNHEX(REPLACE('849c840b-63fa-44b8-9883-47d9940adf8b', '-', '')), 'PS4', 1500.00, 'PS4', '2024-12-01 12:00:00.000', 'NO');
 
 INSERT INTO ecm_products (product_id, product_name, product_price, product_description, product_created_at) VALUES (UNHEX(REPLACE('6cb5d716-f087-47a8-8edd-1d262a9da5f7', '-', '')), 'PS3', 500.00, 'PS3', '2024-12-01 12:00:00.000');
 
