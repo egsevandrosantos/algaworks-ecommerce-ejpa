@@ -11,26 +11,7 @@ import java.util.Optional;
 import com.algaworks.ecommerce.listener.GenerateInvoiceListener;
 import com.algaworks.ecommerce.listener.LoggingLoadedEntityListener;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.PostPersist;
-import jakarta.persistence.PostRemove;
-import jakarta.persistence.PostUpdate;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreRemove;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -90,11 +71,15 @@ public class Order extends BaseEntityId {
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true) /* CascadeType.REMOVE, fetch = FetchType.EAGER */
 	private List<OrderItem> items;
 
-	@OneToOne(mappedBy = "order")
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY, optional = false) // Without effect immediately (with optional = false works)
 	private Payment payment;
 
-	@OneToOne(mappedBy = "order")
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY, optional = false) // Without effect immediately (with optional = false works)
 	private Invoice invoice;
+
+	// For default optional is true, so Hibernate not known if exists your object
+	// Then it loads with Eager and ignore Lazy
+	// With optional = false to Hibernate the object exists and use Lazy
 	
 	public boolean isPaid() {
 		return Objects.equals(status, OrderStatus.PAID);
