@@ -27,6 +27,26 @@ import lombok.Setter;
 @Entity
 @Table(name = "orders")
 @EntityListeners(value = { GenerateInvoiceListener.class, LoggingLoadedEntityListener.class })
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Order.essentialData",
+		attributeNodes = {
+			@NamedAttributeNode(Order_.CREATED_AT),
+			@NamedAttributeNode(Order_.STATUS),
+			@NamedAttributeNode(Order_.TOTAL),
+			@NamedAttributeNode(value = Order_.CLIENT, subgraph = "client")
+		},
+		subgraphs = {
+			@NamedSubgraph(
+				name = "client",
+				attributeNodes = {
+					@NamedAttributeNode(Client_.NAME),
+					@NamedAttributeNode(Client_.CPF)
+				}
+			)
+		}
+	)
+})
 public class Order extends BaseEntityId {
 	// CascadeType.PERSIST = Persist client and persist order
 	@NotNull
@@ -71,10 +91,10 @@ public class Order extends BaseEntityId {
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true) /* CascadeType.REMOVE, fetch = FetchType.EAGER */
 	private List<OrderItem> items;
 
-	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY, optional = false) // Without effect immediately (with optional = false works)
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY) // Without effect immediately (with optional = false works, but hibernate use join in select)
 	private Payment payment;
 
-	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY, optional = false) // Without effect immediately (with optional = false works)
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY) // Without effect immediately (with optional = false works, but hibernate use join in select)
 	private Invoice invoice;
 
 	// For default optional is true, so Hibernate not known if exists your object
