@@ -1,9 +1,12 @@
 package com.algaworks.ecommerce.importantdetails;
 
 import com.algaworks.ecommerce.EntityManagerTests;
+import com.algaworks.ecommerce.model.Client;
+import com.algaworks.ecommerce.model.Client_;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Order_;
 import jakarta.persistence.EntityGraph;
+import jakarta.persistence.Subgraph;
 import org.hibernate.graph.GraphSemantic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,6 +37,20 @@ public class EntityGraphTests extends EntityManagerTests {
 
         List<Order> orders = entityManager.createQuery("SELECT o FROM Order o", Order.class)
             .setHint(GraphSemantic.FETCH.getJakartaHintName(), entityGraph) // Works with criteria too, setHint is a method in TypedQuery
+            .getResultList();
+        Assertions.assertFalse(orders.isEmpty());
+    }
+
+    @Test
+    public void findEssentialsAttributesFromOrderWithFindAndSubgraphTest() {
+        EntityGraph<Order> entityGraph = entityManager.createEntityGraph(Order.class);
+        entityGraph.addAttributeNodes(Order_.CREATED_AT, Order_.STATUS, Order_.TOTAL);
+
+        Subgraph<Client> subgraphClient = entityGraph.addSubgraph(Order_.CLIENT, Client.class);
+        subgraphClient.addAttributeNodes(Client_.NAME, Client_.CPF);
+
+        List<Order> orders = entityManager.createQuery("SELECT o FROM Order o", Order.class)
+            .setHint(GraphSemantic.FETCH.getJakartaHintName(), entityGraph)
             .getResultList();
         Assertions.assertFalse(orders.isEmpty());
     }
