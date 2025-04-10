@@ -28,6 +28,9 @@ public class OrderItem {
 	@EmbeddedId
 	private OrderItemId id;
 
+	@Version
+	private Integer version;
+
 	// Don't need CascadeType.PERSIST to persist item and persist order because order is part of PK (@MapsId), so JPA persist automatically
 	// CascadeType.MERGE = Merge order item and merge order
 	@NotNull
