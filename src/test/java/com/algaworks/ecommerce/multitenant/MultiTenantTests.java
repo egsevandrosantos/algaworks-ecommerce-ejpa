@@ -24,4 +24,19 @@ public class MultiTenantTests extends EntityManagerFactoryTests {
             Assertions.assertEquals("Kindle", product.getName());
         }
     }
+
+    @Test
+    public void multitenancyByMachineTest() {
+        EcmCurrentTenantIdentifierResolver.setTenantIdentifier("algaworks_ecommerce");
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+            Assertions.assertEquals("Kindle", product.getName());
+        }
+
+        EcmCurrentTenantIdentifierResolver.setTenantIdentifier("shop_ecommerce");
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Product product = entityManager.find(Product.class, UUID.fromString("ab5666b6-3106-469b-9e34-2963b801466a"));
+            Assertions.assertEquals("Kindle", product.getName());
+        }
+    }
 }
