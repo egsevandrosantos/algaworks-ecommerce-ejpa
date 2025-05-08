@@ -12,6 +12,8 @@ public class ExecuteDDLTests {
 	@Test
 	public void testExecuteDDL() {
 		Map<String, String> overwriteProperties = new HashMap<>();
+
+		overwriteProperties.put("jakarta.persistence.jdbc.url", "jdbc:mysql://localhost/shop_ecommerce?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC");
 		
 		// <!-- <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/> -->
 		overwriteProperties.put("jakarta.persistence.schema-generation.database.action", "drop-and-create");
