@@ -17,6 +17,6 @@ public class BaseEntityId {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Version
+//	@Version
 	private Integer version;
 }

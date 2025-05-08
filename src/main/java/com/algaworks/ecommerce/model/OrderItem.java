@@ -28,7 +28,7 @@ public class OrderItem {
 	@EmbeddedId
 	private OrderItemId id;
 
-	@Version
+//	@Version
 	private Integer version;
 
 	// Don't need CascadeType.PERSIST to persist item and persist order because order is part of PK (@MapsId), so JPA persist automatically
