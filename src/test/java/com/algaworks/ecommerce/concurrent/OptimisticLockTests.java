@@ -1,36 +1,13 @@
 package com.algaworks.ecommerce.concurrent;
 
+import com.algaworks.ecommerce.EntityManagerFactoryTests;
 import com.algaworks.ecommerce.model.Product;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 
 import java.util.UUID;
 
-public class OptimisticLockTests {
-    protected static EntityManagerFactory entityManagerFactory;
-
-    @BeforeAll
-    public static void beforeAll() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("Ecommerce-PU");
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        entityManagerFactory.close();
-    }
-
-    private static void log(Object obj, Object... args) {
-        System.out.printf("[LOG " + System.currentTimeMillis() + "] " + obj + "%n", args);
-    }
-
-    private static void wait(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000L);
-        } catch (InterruptedException ignored) {}
-    }
-
+public class OptimisticLockTests extends EntityManagerFactoryTests  {
     @Test
     public void useOptimisticLockTest() throws InterruptedException {
         Runnable runnable1 = () -> {
