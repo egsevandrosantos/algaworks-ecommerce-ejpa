@@ -25,13 +25,13 @@ import lombok.Setter;
 	name = "clients",
 	uniqueConstraints = {
 		@UniqueConstraint(
-			name = "unq_cpf",
+			name = "unq_client_cpf",
 			columnNames = { "cpf" }
 		) 
 	},
 	indexes = {
 		@Index(
-			name = "idx_name",
+			name = "idx_client_name",
 			columnList = "name" // Separated by ',' -> Column name
 		)
 	}

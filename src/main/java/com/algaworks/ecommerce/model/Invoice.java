@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.model;
 
+import java.sql.Types;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 
 @Getter
 @Setter
@@ -41,7 +43,8 @@ public class Invoice extends BaseEntityId {
 
 	@NotEmpty
 	@Lob
-	@Column(columnDefinition = "LONGBLOB NOT NULL")
+	// /* MySQL */ @Column(columnDefinition = "LONGBLOB NOT NULL")
+	@JdbcTypeCode(Types.VARBINARY)
 	private byte[] xml;
 
 	// If use Date type, use TemporalType.TIMESTAMP

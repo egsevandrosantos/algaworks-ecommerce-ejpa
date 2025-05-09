@@ -26,7 +26,7 @@ import lombok.Setter;
 	name = "categories",
 	indexes = {
 		@Index(
-			name = "idx_name",
+			name = "idx_category_name",
 			columnList = "name",
 			unique = true
 		)

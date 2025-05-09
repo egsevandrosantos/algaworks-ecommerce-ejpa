@@ -16,6 +16,8 @@ public class BaseEntityId {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	// /* MySQL */ @GeneratedValue(strategy = GenerationType.IDENTITY)
+	// /* Postgres */ @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private UUID id;
 
 //	@Version

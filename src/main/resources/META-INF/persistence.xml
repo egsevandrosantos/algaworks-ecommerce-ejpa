@@ -17,10 +17,13 @@
     	
         <properties>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />
-            <property name="jakarta.persistence.jdbc.user" value="root" />
+                      value="jdbc:postgresql://localhost/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />
+                      <!-- value="jdbc:mysql://localhost/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" /> -->
+            <property name="jakarta.persistence.jdbc.user" value="postgres" />
+            <!-- <property name="jakarta.persistence.jdbc.user" value="root" /> -->
             <property name="jakarta.persistence.jdbc.password" value="admin" />
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <!-- <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" /> -->
             
             <property name="hibernate.hikari.maximumPoolSize" value="16" />
             <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
@@ -40,15 +43,15 @@
             <!-- CREATE WITH SCRIPT -->
             <!-- <property name="jakarta.persistence.schema-generation.create-source" value="script"/> -->
             <!-- CREATE WITH METADATA THEN SCRIPT -->
-            <property name="jakarta.persistence.schema-generation.create-source" value="metadata-then-script"/>
+            <!-- <property name="jakarta.persistence.schema-generation.create-source" value="metadata-then-script"/> -->
             <!-- CREATE WITH SCRIPT THEN METADATA -->
             <!-- <property name="jakarta.persistence.schema-generation.create-source" value="script-then-metadata"/> -->
             <!-- THE SAME OPTIONS ABOVE TO DROP. THE VALUES DON'T NEED EQUALS -->
-            <property name="jakarta.persistence.schema-generation.drop-source" value="metadata-then-script"/>
+            <!-- <property name="jakarta.persistence.schema-generation.drop-source" value="metadata-then-script"/> -->
             
             <!-- SCRIPT TO CREATE AND DROP TABLES -->
-            <property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-metadata-then-script.sql"/>
-            <property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-metadata-then-script.sql"/>
+            <!-- <property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-metadata-then-script.sql"/> -->
+            <!-- <property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-metadata-then-script.sql"/> -->
             
             <!-- DO NOT USE IN PRODUCTION -->
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/seeds.sql"/>
@@ -60,7 +63,8 @@
             <property name="jakarta.persistence.schema-generation.scripts.create-target" value="src/main/resources/META-INF/database/exported-create-script.sql"/>
             <property name="jakarta.persistence.schema-generation.scripts.drop-target" value="src/main/resources/META-INF/database/exported-drop-script.sql"/>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" /> -->
 
 <!--            <property name="hibernate.multiTenancy" value="DATABASE"/>-->
 <!--            <property name="hibernate.tenant_identifier_resolver" value="com.algaworks.ecommerce.hibernate.EcmCurrentTenantIdentifierResolver"/>-->

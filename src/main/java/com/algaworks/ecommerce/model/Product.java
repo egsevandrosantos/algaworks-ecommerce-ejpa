@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.model;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 
 @Getter
 @Setter
@@ -29,13 +31,13 @@ import lombok.Setter;
 	name = "products",
 	uniqueConstraints = {
 		@UniqueConstraint(
-			name = "unq_name",
+			name = "unq_product_name",
 			columnNames = { "name" }
 		)
 	},
 	indexes = {
 		@Index(
-			name = "idx_name",
+			name = "idx_product_name",
 			columnList = "name"
 		)
 	}
@@ -87,6 +89,7 @@ public class Product extends BaseEntityId {
 	// columnDefinition = SQL
 	// @Column(columnDefinition = "VARCHAR(275) NOT NULL DEFAULT 'description'")
 	@Lob // longtext
+	@JdbcTypeCode(Types.LONGVARCHAR)
 	private String description;
 
 	// 10 are total, 8 integers and 2 decimals
@@ -133,6 +136,7 @@ public class Product extends BaseEntityId {
 	private List<Attribute> attributes;
 
 	@Lob
+	@JdbcTypeCode(Types.VARBINARY)
 	private byte[] photo;
 
 	@Convert(converter = BooleanYesNoConverter.class)
